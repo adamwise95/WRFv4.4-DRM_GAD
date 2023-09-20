@@ -70,7 +70,8 @@ CONTAINS
                                     vertical_diffusion_2, horizontal_diffusion_2, calculate_km_kh, &
                                     tke_rhs, cal_helicity, &
                                     nonlocal_flux,meso_length_scale,free_atmos_length, &
-                                    vertical_diffusion_implicit !XZ 
+                                    vertical_diffusion_implicit, & !XZ 
+                                    calc_surf_ust_hs, ustm_to_ust !JDM RSA ASW
     USE module_em, ONLY : calculate_phy_tend
     USE module_fddaobs_driver, ONLY : fddaobs_driver
     USE module_bc, ONLY : set_physical_bc3d, set_physical_bc2d
@@ -569,6 +570,37 @@ IF (  config_flags%les_pert_opt .GT. 0 ) THEN
 
 ENDIF
 !JDM end perts
+
+!JDM-SWiFT New surface layer subroutine, START ! ASW
+ 
+IF (config_flags%isfflx .GE. 3 ) THEN
+
+          !$OMP PARALLEL DO   &
+          !$OMP PRIVATE ( ij )
+          DO ij = 1 , grid%num_tiles
+ 
+            CALL calc_surf_ust_hs ( grid%ustm, grid%hfx,                     &
+                                    grid%u_2, grid%v_2, grid%t_2, grid%rdz,  &
+                                    grid%rho, grid%tsk, grid%cd, grid%ch,    &
+                                    moist, num_moist,                        &
+                                    grid%dt, grid%xtime,                     &
+                                    config_flags%tke_heat_flux,              &
+                                    config_flags%z_rough,  grid%znt,         &
+                                    !config_flags%meso_force,                 &
+                                    config_flags%isfflx,                     &
+                                    !grid%meso_hfx, grid%meso_tsk,            &
+                                    ids, ide, jds, jde, kds, kde,            &
+                                    ims, ime, jms, jme, kms, kme,            &
+                                    grid%i_start(ij), grid%i_end(ij),        &
+                                    grid%j_start(ij), grid%j_end(ij),        &
+                                    k_start    , k_end                       )
+ 
+          ENDDO
+          !$OMP END PARALLEL DO
+ 
+ENDIF
+ 
+!JDM-SWiFT New surface layer subroutine, END !ASW
 
 #ifdef DM_PARALLEL
 #  include "HALO_EM_TKE_C.inc"
