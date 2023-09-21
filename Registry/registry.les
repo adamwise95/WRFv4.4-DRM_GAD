@@ -25,6 +25,9 @@ state   real    molt              ij      misc          1                -  r  "
 state   real    spec_dumvar_1      -      misc          1                -  r  "spec_dumvar_1"  "Dummy variable for specified heat flux forcing" #MMC
 state   real    spec_dumvar_2      -      misc          1                -  r  "spec_dumvar_2"  "Dummy variable for specified surface T forcing" #MMC 
 
+## JDM (surf layer)
+rconfig real    z_rough         namelist,dynamics       max_domains     0.1     -       "roughness length for surface similarity"
+
 #ASW CPM
 state   real    pert_t   ikj    misc            1       -       rh      "pert_t"        ""      "K"
 state   real    prttms   -      misc            1       -       r       "prttms"        ""      "s"
