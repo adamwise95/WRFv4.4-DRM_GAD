@@ -2586,7 +2586,7 @@ END SUBROUTINE smag2d_km
      ENDDO
      ENDDO
  
-    CASE (1) ! use surface heat flux computed from surface routine
+    CASE (1,3) ! use surface heat flux computed from surface routine
      DO j = j_start, j_end
      DO i = i_start, i_end
         cpm = cp * (1. + 0.8 * moist(i,kts,j,P_QV))
@@ -4982,7 +4982,7 @@ SUBROUTINE vertical_diffusion_2   ( ru_tendf, rv_tendf, rw_tendf, rt_tendf,   &
     ENDDO
     ENDDO
 
-  CASE (1,2) ! ustar computed from surface routine
+  CASE (1,2,3) ! ustar computed from surface routine
     DO j = j_start, j_end
     DO i = i_start, ite
        V0_u=0.
@@ -5094,7 +5094,7 @@ SUBROUTINE vertical_diffusion_2   ( ru_tendf, rv_tendf, rw_tendf, rt_tendf,   &
     ENDDO
     ENDDO
 
-  CASE (1) ! use surface heat flux computed from surface routine
+  CASE (1,3) ! use surface heat flux computed from surface routine
     DO j = j_start, j_end
     DO i = i_start, i_end
 
@@ -5190,7 +5190,7 @@ SUBROUTINE vertical_diffusion_2   ( ru_tendf, rv_tendf, rw_tendf, rt_tendf,   &
   qflux: SELECT CASE( config_flags%isfflx )
   CASE (0)
 ! do nothing
-  CASE (1,2) ! with surface moisture flux
+  CASE (1,2,3) ! with surface moisture flux
     IF ( im == P_QV ) THEN
        DO j = j_start, j_end
        DO i = i_start, i_end
@@ -6074,7 +6074,7 @@ END SUBROUTINE rsfs_vertical_diffusion_s
     ENDDO
     ENDDO
  
-  CASE (1) ! use surface heat flux computed from surface routine
+  CASE (1,3) ! use surface heat flux computed from surface routine
     DO j = j_start, j_end
     DO i = i_start, i_end
        cpm = cp * (1. + 0.8 * moist(i,kts,j,P_QV))
@@ -7485,7 +7485,7 @@ END SUBROUTINE phy_bc
    ENDDO
    ENDDO
 
-  CASE (1) ! use surface heat flux computed from surface routine
+  CASE (1,3) ! use surface heat flux computed from surface routine
    K=KTS
 
    DO j = j_start, j_end
@@ -7913,7 +7913,7 @@ END SUBROUTINE phy_bc
     END DO
     END DO
 
-  CASE (1,2) ! ustar computed from surface routine
+  CASE (1,2,3) ! ustar computed from surface routine
 
     DO j = j_start, j_end
     DO i = i_start, i_end
@@ -7987,7 +7987,7 @@ END SUBROUTINE phy_bc
     END DO
     END DO
 
-  CASE (1,2) ! ustar computed from surface routine
+  CASE (1,2,3) ! ustar computed from surface routine
 
     DO j = j_start, j_end
     DO i = i_start, i_end
@@ -9757,7 +9757,7 @@ END SUBROUTINE calc_surf_ust_hs
     ENDDO
     ENDDO
  
-  CASE (1) ! use surface heat flux computed from surface routine
+  CASE (1,3) ! use surface heat flux computed from surface routine
     ! do nothing
   CASE DEFAULT
     CALL wrf_error_fatal( 'isfflx value invalid for diff_opt=2' )
