@@ -1,0 +1,1614 @@
+Intel(R) Fortran Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 16.0.4.258 Build 20160811
+Copyright (C) 1985-2016 Intel Corporation.  All rights reserved.
+
+ar: creating libesmf_time.a
+ar: creating ./libio_grib_share.a
+ar: creating ../libio_grib1.a
+0.46user 0.19system 0:00.94elapsed 69%CPU (0avgtext+0avgdata 39580maxresident)k
+424inputs+392outputs (1major+17816minor)pagefaults 0swaps
+0.62user 0.24system 0:01.04elapsed 83%CPU (0avgtext+0avgdata 45104maxresident)k
+128inputs+696outputs (0major+19453minor)pagefaults 0swaps
+0.13user 0.17system 0:00.51elapsed 58%CPU (0avgtext+0avgdata 33684maxresident)k
+96inputs+160outputs (0major+16117minor)pagefaults 0swaps
+0.42user 0.30system 0:01.07elapsed 67%CPU (0avgtext+0avgdata 42488maxresident)k
+304inputs+1056outputs (0major+18835minor)pagefaults 0swaps
+ar: creating libwrfio_int.a
+
+real	0m0.602s
+user	0m0.280s
+sys	0m0.186s
+0.22user 0.27system 0:00.90elapsed 54%CPU (0avgtext+0avgdata 30860maxresident)k
+6144inputs+1864outputs (0major+24533minor)pagefaults 0swaps
+ar: creating libfftpack.a
+1.06user 0.18system 0:01.40elapsed 89%CPU (0avgtext+0avgdata 45792maxresident)k
+0inputs+504outputs (0major+20256minor)pagefaults 0swaps
+0.56user 0.41system 0:01.40elapsed 69%CPU (0avgtext+0avgdata 46304maxresident)k
+0inputs+328outputs (0major+20864minor)pagefaults 0swaps
+opening Registry/registry.dimspec
+including Registry/registry.dimspec
+opening Registry/registry.em_shared_collection
+including Registry/registry.em_shared_collection
+opening Registry/Registry.EM_COMMON
+including Registry/Registry.EM_COMMON
+opening Registry/registry.io_boilerplate
+including Registry/registry.io_boilerplate
+opening Registry/io_boilerplate_temporary.inc
+including Registry/io_boilerplate_temporary.inc
+opening Registry/registry.fire
+including Registry/registry.fire
+opening Registry/registry.avgflx
+including Registry/registry.avgflx
+opening Registry/registry.stoch
+including Registry/registry.stoch
+opening Registry/registry.les
+including Registry/registry.les
+Registry error: unbalanced quotes in line:
+rconfig integer spec_ideal          namelist,dynamics   1                 0  -  "flag to activate spec_hfx and spec_z0 in sf_sfclay_physics=1 and spec_l
+Registry error: unbalanced quotes in line:
+rconfig real    spec_hfx            namelist,dynamics   1               0.0  -  "Constant surface heat flux (W/m^2) for use with sf_sfclay_physics=1 in
+Registry error: unbalanced quotes in line:
+rconfig real    spec_z0             namelist,dynamics       1               0.1  -  "Homogeneous roughness length (m) for use with sf_sfclay_physics=1 i
+Registry error: unbalanced quotes in line:
+rconfig real    spec_lat            namelist,dynamics       1               0.0  -  "Latitude to compute coriolis terms for idealized simulations (spec_
+Registry error: unbalanced quotes in line:
+rconfig logical spec_init_perts      namelist,dynamics       1             .false.  -  "Switch for initial temperature perturbations for ideal LES ideal
+Registry error: unbalanced quotes in line:
+rconfig integer m_pblh_opt      namelist,dynamics       max_domains     0       -       "1 to calculate mesoscale pblh and pass to LES for
+opening Registry/registry.cam
+including Registry/registry.cam
+opening Registry/registry.clm
+including Registry/registry.clm
+opening Registry/registry.lake
+including Registry/registry.lake
+opening Registry/registry.ssib
+including Registry/registry.ssib
+opening Registry/registry.noahmp
+including Registry/registry.noahmp
+opening Registry/registry.sbm
+including Registry/registry.sbm
+opening Registry/registry.polrad
+including Registry/registry.polrad
+opening Registry/registry.afwa
+including Registry/registry.afwa
+opening Registry/registry.rasm_diag
+including Registry/registry.rasm_diag
+opening Registry/registry.elec
+including Registry/registry.elec
+opening Registry/registry.bdy_perturb
+including Registry/registry.bdy_perturb
+opening Registry/registry.hyb_coord
+including Registry/registry.hyb_coord
+opening Registry/registry.new3d_wif
+including Registry/registry.new3d_wif
+opening Registry/registry.trad_fields
+including Registry/registry.trad_fields
+opening Registry/registry.solar_fields
+including Registry/registry.solar_fields
+opening Registry/registry.diags
+including Registry/registry.diags
+opening Registry/registry.CMAQ
+including Registry/registry.CMAQ
+opening Registry/registry.slices
+including Registry/registry.slices
+opening Registry/registry.windturb
+including Registry/registry.windturb
+Registry INFO variable counts: 0d 2506 1d 156 2d 1411 3d 1023
+Packages in gen_scalar_indices1
+WARNING: dfi_qzi is not a member of 4D array dfi_scalar
+WARNING: ts_swp_tot is not a member of 4D array state
+WARNING: ts_re_qs_tot is not a member of 4D array state
+WARNING: ts_tau_qs_tot is not a member of 4D array state
+WARNING: fire_smoke is not a member of 4D array state
+REGISTRY WARNING: o3rad: o3rad_b is not a variable or number; ignoring it
+REGISTRY WARNING: o3rad: o3rad_bt is not a variable or number; ignoring it
+REGISTRY WARNING: aerod(grid%sm31,grid%sm32,grid%sm33,itrace): aerod_b is not a variable or number; ignoring it
+REGISTRY WARNING: aerod(grid%sm31,grid%sm32,grid%sm33,itrace): aerod_bt is not a variable or number; ignoring it
+REGISTRY WARNING: aerocu(grid%sm31,grid%sm32,grid%sm33,itrace): aerocu_b is not a variable or number; ignoring it
+REGISTRY WARNING: aerocu(grid%sm31,grid%sm32,grid%sm33,itrace): aerocu_bt is not a variable or number; ignoring it
+REGISTRY WARNING: om_tmp: om_tmp_b is not a variable or number; ignoring it
+REGISTRY WARNING: om_tmp: om_tmp_bt is not a variable or number; ignoring it
+REGISTRY WARNING: om_s: om_s_b is not a variable or number; ignoring it
+REGISTRY WARNING: om_s: om_s_bt is not a variable or number; ignoring it
+REGISTRY WARNING: om_u: om_u_b is not a variable or number; ignoring it
+REGISTRY WARNING: om_u: om_u_bt is not a variable or number; ignoring it
+REGISTRY WARNING: om_v: om_v_b is not a variable or number; ignoring it
+REGISTRY WARNING: om_v: om_v_bt is not a variable or number; ignoring it
+REGISTRY WARNING: om_ml: om_ml_b is not a variable or number; ignoring it
+REGISTRY WARNING: om_ml: om_ml_bt is not a variable or number; ignoring it
+REGISTRY WARNING: field_sf: field_sf_b is not a variable or number; ignoring it
+REGISTRY WARNING: field_sf: field_sf_bt is not a variable or number; ignoring it
+REGISTRY WARNING: field_pbl: field_pbl_b is not a variable or number; ignoring it
+REGISTRY WARNING: field_pbl: field_pbl_bt is not a variable or number; ignoring it
+REGISTRY WARNING: field_conv: field_conv_b is not a variable or number; ignoring it
+REGISTRY WARNING: field_conv: field_conv_bt is not a variable or number; ignoring it
+REGISTRY WARNING: ru_tendf_stoch: ru_tendf_stoch_b is not a variable or number; ignoring it
+REGISTRY WARNING: ru_tendf_stoch: ru_tendf_stoch_bt is not a variable or number; ignoring it
+REGISTRY WARNING: rv_tendf_stoch: rv_tendf_stoch_b is not a variable or number; ignoring it
+REGISTRY WARNING: rv_tendf_stoch: rv_tendf_stoch_bt is not a variable or number; ignoring it
+REGISTRY WARNING: rt_tendf_stoch: rt_tendf_stoch_b is not a variable or number; ignoring it
+REGISTRY WARNING: rt_tendf_stoch: rt_tendf_stoch_bt is not a variable or number; ignoring it
+REGISTRY WARNING: rand_pert: rand_pert_b is not a variable or number; ignoring it
+REGISTRY WARNING: rand_pert: rand_pert_bt is not a variable or number; ignoring it
+REGISTRY WARNING: pattern_spp_conv: pattern_spp_conv_b is not a variable or number; ignoring it
+REGISTRY WARNING: pattern_spp_conv: pattern_spp_conv_bt is not a variable or number; ignoring it
+REGISTRY WARNING: pattern_spp_pbl: pattern_spp_pbl_b is not a variable or number; ignoring it
+REGISTRY WARNING: pattern_spp_pbl: pattern_spp_pbl_bt is not a variable or number; ignoring it
+REGISTRY WARNING: pattern_spp_lsm: pattern_spp_lsm_b is not a variable or number; ignoring it
+REGISTRY WARNING: pattern_spp_lsm: pattern_spp_lsm_bt is not a variable or number; ignoring it
+REGISTRY WARNING: rstoch: rstoch_b is not a variable or number; ignoring it
+REGISTRY WARNING: rstoch: rstoch_bt is not a variable or number; ignoring it
+REGISTRY WARNING: m_pblh: m_pblh_b is not a variable or number; ignoring it
+REGISTRY WARNING: m_pblh: m_pblh_bt is not a variable or number; ignoring it
+REGISTRY WARNING: field_u_tend_perturb: field_u_tend_perturb_b is not a variable or number; ignoring it
+REGISTRY WARNING: field_u_tend_perturb: field_u_tend_perturb_bt is not a variable or number; ignoring it
+REGISTRY WARNING: field_v_tend_perturb: field_v_tend_perturb_b is not a variable or number; ignoring it
+REGISTRY WARNING: field_v_tend_perturb: field_v_tend_perturb_bt is not a variable or number; ignoring it
+REGISTRY WARNING: field_t_tend_perturb: field_t_tend_perturb_b is not a variable or number; ignoring it
+REGISTRY WARNING: field_t_tend_perturb: field_t_tend_perturb_bt is not a variable or number; ignoring it
+ADVISORY: RSL_LITE version of gen_comms is linked in with registry program.
+
+real	0m0.488s
+user	0m0.139s
+sys	0m0.201s
+
+real	0m0.433s
+user	0m0.083s
+sys	0m0.161s
+
+real	0m0.468s
+user	0m0.171s
+sys	0m0.171s
+
+real	0m0.372s
+user	0m0.089s
+sys	0m0.160s
+
+real	0m0.375s
+user	0m0.066s
+sys	0m0.185s
+
+real	0m0.787s
+user	0m0.419s
+sys	0m0.227s
+
+real	0m14.601s
+user	0m13.556s
+sys	0m0.733s
+
+real	0m32.043s
+user	0m31.065s
+sys	0m0.646s
+
+real	0m34.300s
+user	0m33.409s
+sys	0m0.620s
+
+real	0m13.110s
+user	0m12.476s
+sys	0m0.384s
+
+real	0m4.673s
+user	0m4.203s
+sys	0m0.281s
+
+real	0m1.282s
+user	0m0.926s
+sys	0m0.222s
+
+real	0m7.333s
+user	0m6.821s
+sys	0m0.306s
+
+real	0m28.987s
+user	0m27.991s
+sys	0m0.633s
+
+real	0m31.500s
+user	0m30.543s
+sys	0m0.593s
+
+real	0m0.724s
+user	0m0.331s
+sys	0m0.211s
+
+real	0m0.668s
+user	0m0.331s
+sys	0m0.199s
+
+real	0m0.452s
+user	0m0.146s
+sys	0m0.167s
+
+real	0m12.087s
+user	0m11.076s
+sys	0m0.661s
+
+real	0m0.385s
+user	0m0.109s
+sys	0m0.158s
+
+real	0m0.798s
+user	0m0.445s
+sys	0m0.217s
+
+real	0m0.367s
+user	0m0.077s
+sys	0m0.169s
+
+real	0m0.813s
+user	0m0.459s
+sys	0m0.199s
+
+real	0m2.509s
+user	0m1.671s
+sys	0m0.391s
+
+real	0m11.733s
+user	0m10.705s
+sys	0m0.730s
+
+real	1m35.360s
+user	1m33.457s
+sys	0m1.153s
+
+real	1m28.816s
+user	1m26.818s
+sys	0m1.220s
+
+real	1m30.175s
+user	1m28.209s
+sys	0m1.196s
+
+real	1m5.755s
+user	1m3.998s
+sys	0m1.069s
+
+real	11m30.392s
+user	11m25.844s
+sys	0m2.047s
+
+real	0m1.889s
+user	0m0.781s
+sys	0m0.876s
+
+real	2m45.938s
+user	2m35.761s
+sys	0m6.011s
+
+real	0m2.943s
+user	0m1.997s
+sys	0m0.575s
+
+real	0m2.325s
+user	0m1.828s
+sys	0m0.315s
+
+real	0m0.377s
+user	0m0.083s
+sys	0m0.158s
+
+real	0m4.675s
+user	0m2.974s
+sys	0m0.938s
+
+real	0m1.275s
+user	0m0.925s
+sys	0m0.218s
+
+real	0m13.076s
+user	0m5.230s
+sys	0m3.236s
+
+real	0m7.323s
+user	0m6.756s
+sys	0m0.347s
+
+real	0m0.366s
+user	0m0.068s
+sys	0m0.180s
+
+real	0m0.590s
+user	0m0.281s
+sys	0m0.187s
+
+real	0m6.433s
+user	0m4.199s
+sys	0m1.710s
+
+real	0m6.249s
+user	0m4.097s
+sys	0m1.660s
+
+real	0m6.509s
+user	0m4.279s
+sys	0m1.716s
+
+real	0m6.482s
+user	0m4.285s
+sys	0m1.679s
+
+real	0m6.729s
+user	0m4.355s
+sys	0m1.802s
+
+real	0m6.616s
+user	0m4.366s
+sys	0m1.735s
+
+real	0m6.489s
+user	0m4.206s
+sys	0m1.768s
+
+real	0m6.172s
+user	0m4.036s
+sys	0m1.627s
+
+real	0m6.350s
+user	0m4.123s
+sys	0m1.723s
+
+real	0m6.244s
+user	0m4.053s
+sys	0m1.693s
+
+real	0m6.380s
+user	0m4.221s
+sys	0m1.658s
+
+real	0m6.618s
+user	0m4.390s
+sys	0m1.716s
+
+real	0m6.444s
+user	0m4.241s
+sys	0m1.697s
+
+real	0m6.489s
+user	0m4.299s
+sys	0m1.672s
+
+real	0m6.536s
+user	0m4.240s
+sys	0m1.707s
+
+real	0m6.264s
+user	0m4.076s
+sys	0m1.675s
+ar: creating ../main/libwrflib.a
+0.42user 0.20system 0:00.76elapsed 82%CPU (0avgtext+0avgdata 57300maxresident)k
+128inputs+704outputs (0major+22945minor)pagefaults 0swaps
+
+real	0m1.334s
+user	0m0.274s
+sys	0m0.320s
+
+real	0m0.430s
+user	0m0.107s
+sys	0m0.181s
+
+real	0m0.438s
+user	0m0.136s
+sys	0m0.178s
+
+real	0m0.446s
+user	0m0.128s
+sys	0m0.178s
+
+real	0m0.378s
+user	0m0.083s
+sys	0m0.168s
+
+real	0m0.354s
+user	0m0.073s
+sys	0m0.162s
+
+real	0m3.976s
+user	0m3.468s
+sys	0m0.301s
+
+real	0m0.428s
+user	0m0.129s
+sys	0m0.171s
+
+real	0m0.360s
+user	0m0.065s
+sys	0m0.170s
+
+real	0m0.480s
+user	0m0.159s
+sys	0m0.186s
+
+real	0m1.058s
+user	0m0.699s
+sys	0m0.221s
+
+real	0m0.677s
+user	0m0.323s
+sys	0m0.210s
+
+real	0m4.239s
+user	0m3.819s
+sys	0m0.234s
+
+real	0m0.379s
+user	0m0.085s
+sys	0m0.167s
+
+real	0m0.362s
+user	0m0.070s
+sys	0m0.165s
+
+real	0m0.601s
+user	0m0.272s
+sys	0m0.187s
+
+real	0m0.819s
+user	0m0.427s
+sys	0m0.232s
+
+real	0m12.243s
+user	0m10.739s
+sys	0m1.156s
+
+real	0m1.036s
+user	0m0.594s
+sys	0m0.277s
+
+real	0m2.136s
+user	0m1.539s
+sys	0m0.357s
+
+real	0m2.403s
+user	0m1.848s
+sys	0m0.314s
+
+real	0m0.371s
+user	0m0.075s
+sys	0m0.164s
+
+real	0m1.909s
+user	0m1.403s
+sys	0m0.310s
+
+real	0m8.054s
+user	0m7.549s
+sys	0m0.284s
+
+real	0m0.476s
+user	0m0.096s
+sys	0m0.189s
+
+real	0m3.351s
+user	0m2.929s
+sys	0m0.250s
+
+real	0m0.663s
+user	0m0.312s
+sys	0m0.220s
+
+real	0m16.442s
+user	0m15.735s
+sys	0m0.452s
+
+real	0m0.764s
+user	0m0.408s
+sys	0m0.214s
+
+real	0m1.046s
+user	0m0.566s
+sys	0m0.289s
+
+real	0m1.236s
+user	0m0.775s
+sys	0m0.268s
+
+real	0m0.581s
+user	0m0.170s
+sys	0m0.263s
+
+real	0m3.509s
+user	0m3.080s
+sys	0m0.266s
+
+real	0m4.416s
+user	0m3.843s
+sys	0m0.345s
+
+real	0m0.826s
+user	0m0.530s
+sys	0m0.180s
+
+real	0m0.737s
+user	0m0.319s
+sys	0m0.257s
+
+real	0m0.678s
+user	0m0.279s
+sys	0m0.252s
+
+real	0m3.306s
+user	0m2.787s
+sys	0m0.327s
+
+real	0m0.776s
+user	0m0.374s
+sys	0m0.239s
+
+real	0m1.441s
+user	0m0.900s
+sys	0m0.343s
+
+real	0m27.250s
+user	0m25.777s
+sys	0m0.999s
+
+real	0m0.972s
+user	0m0.465s
+sys	0m0.279s
+
+real	0m0.904s
+user	0m0.474s
+sys	0m0.271s
+
+real	0m0.958s
+user	0m0.551s
+sys	0m0.250s
+
+real	0m0.946s
+user	0m0.532s
+sys	0m0.253s
+
+real	0m17.216s
+user	0m13.888s
+sys	0m2.199s
+
+real	0m6.457s
+user	0m4.689s
+sys	0m1.155s
+
+real	0m4.091s
+user	0m3.316s
+sys	0m0.489s
+
+real	0m0.432s
+user	0m0.120s
+sys	0m0.174s
+
+real	0m0.373s
+user	0m0.065s
+sys	0m0.178s
+
+real	0m0.398s
+user	0m0.109s
+sys	0m0.160s
+
+real	0m0.373s
+user	0m0.076s
+sys	0m0.164s
+
+real	0m0.365s
+user	0m0.070s
+sys	0m0.171s
+
+real	0m0.375s
+user	0m0.095s
+sys	0m0.162s
+
+real	0m0.684s
+user	0m0.364s
+sys	0m0.183s
+
+real	0m0.423s
+user	0m0.123s
+sys	0m0.171s
+
+real	0m0.360s
+user	0m0.074s
+sys	0m0.167s
+
+real	0m0.500s
+user	0m0.185s
+sys	0m0.191s
+
+real	0m0.485s
+user	0m0.168s
+sys	0m0.178s
+
+real	0m0.393s
+user	0m0.104s
+sys	0m0.167s
+
+real	0m0.360s
+user	0m0.071s
+sys	0m0.161s
+
+real	0m0.796s
+user	0m0.476s
+sys	0m0.193s
+
+real	0m2.675s
+user	0m2.252s
+sys	0m0.236s
+
+real	0m2.931s
+user	0m2.508s
+sys	0m0.239s
+
+real	0m0.514s
+user	0m0.203s
+sys	0m0.179s
+
+real	0m0.369s
+user	0m0.066s
+sys	0m0.169s
+
+real	0m2.282s
+user	0m1.885s
+sys	0m0.255s
+
+real	0m1.102s
+user	0m0.752s
+sys	0m0.218s
+
+real	0m6.381s
+user	0m5.878s
+sys	0m0.326s
+
+real	0m0.473s
+user	0m0.153s
+sys	0m0.186s
+
+real	0m0.443s
+user	0m0.147s
+sys	0m0.168s
+
+real	0m0.487s
+user	0m0.188s
+sys	0m0.169s
+
+real	0m0.378s
+user	0m0.075s
+sys	0m0.165s
+
+real	0m0.367s
+user	0m0.077s
+sys	0m0.150s
+
+real	0m5.095s
+user	0m4.571s
+sys	0m0.285s
+
+real	0m6.332s
+user	0m5.723s
+sys	0m0.353s
+
+real	0m2.279s
+user	0m1.884s
+sys	0m0.239s
+
+real	0m0.374s
+user	0m0.079s
+sys	0m0.162s
+
+real	0m0.370s
+user	0m0.062s
+sys	0m0.179s
+
+real	0m2.521s
+user	0m2.150s
+sys	0m0.230s
+
+real	0m0.374s
+user	0m0.068s
+sys	0m0.174s
+
+real	0m2.112s
+user	0m1.717s
+sys	0m0.226s
+
+real	0m1.850s
+user	0m1.482s
+sys	0m0.239s
+
+real	0m1.739s
+user	0m1.381s
+sys	0m0.202s
+
+real	0m8.088s
+user	0m7.607s
+sys	0m0.302s
+
+real	0m0.426s
+user	0m0.117s
+sys	0m0.176s
+
+real	0m1.822s
+user	0m1.464s
+sys	0m0.213s
+
+real	0m3.153s
+user	0m2.623s
+sys	0m0.252s
+
+real	0m2.122s
+user	0m1.738s
+sys	0m0.235s
+
+real	0m2.095s
+user	0m1.729s
+sys	0m0.222s
+
+real	0m3.237s
+user	0m2.800s
+sys	0m0.276s
+
+real	0m17.084s
+user	0m16.530s
+sys	0m0.343s
+
+real	0m4.318s
+user	0m3.899s
+sys	0m0.249s
+
+real	0m5.111s
+user	0m4.521s
+sys	0m0.314s
+
+real	0m10.307s
+user	0m9.671s
+sys	0m0.420s
+
+real	0m0.918s
+user	0m0.580s
+sys	0m0.204s
+
+real	0m5.889s
+user	0m5.410s
+sys	0m0.316s
+
+real	0m1.189s
+user	0m0.874s
+sys	0m0.185s
+
+real	0m3.091s
+user	0m2.668s
+sys	0m0.267s
+
+real	0m3.587s
+user	0m3.162s
+sys	0m0.239s
+
+real	0m3.178s
+user	0m2.742s
+sys	0m0.281s
+
+real	0m3.967s
+user	0m3.507s
+sys	0m0.290s
+
+real	0m2.252s
+user	0m1.870s
+sys	0m0.238s
+
+real	0m7.973s
+user	0m7.468s
+sys	0m0.313s
+
+real	0m3.095s
+user	0m2.652s
+sys	0m0.273s
+
+real	0m1.445s
+user	0m1.092s
+sys	0m0.223s
+
+real	0m5.801s
+user	0m5.308s
+sys	0m0.298s
+
+real	0m11.370s
+user	0m10.798s
+sys	0m0.355s
+
+real	0m1.344s
+user	0m0.940s
+sys	0m0.198s
+
+real	0m3.348s
+user	0m2.913s
+sys	0m0.250s
+
+real	0m3.957s
+user	0m3.502s
+sys	0m0.272s
+
+real	0m5.089s
+user	0m4.625s
+sys	0m0.276s
+
+real	0m1.126s
+user	0m0.742s
+sys	0m0.231s
+
+real	0m0.365s
+user	0m0.077s
+sys	0m0.162s
+
+real	0m5.730s
+user	0m5.243s
+sys	0m0.306s
+
+real	0m1.397s
+user	0m1.042s
+sys	0m0.220s
+
+real	0m2.032s
+user	0m1.635s
+sys	0m0.230s
+
+real	0m6.971s
+user	0m6.465s
+sys	0m0.324s
+
+real	0m7.212s
+user	0m6.712s
+sys	0m0.324s
+
+real	0m6.017s
+user	0m5.563s
+sys	0m0.275s
+
+real	0m0.398s
+user	0m0.069s
+sys	0m0.176s
+
+real	0m5.226s
+user	0m4.741s
+sys	0m0.304s
+
+real	0m3.184s
+user	0m2.756s
+sys	0m0.244s
+
+real	0m0.815s
+user	0m0.487s
+sys	0m0.191s
+
+real	0m4.193s
+user	0m3.777s
+sys	0m0.227s
+
+real	0m0.887s
+user	0m0.315s
+sys	0m0.192s
+
+real	0m3.435s
+user	0m3.011s
+sys	0m0.209s
+
+real	0m27.436s
+user	0m26.535s
+sys	0m0.509s
+
+real	0m1.905s
+user	0m1.502s
+sys	0m0.221s
+
+real	0m22.569s
+user	0m21.813s
+sys	0m0.409s
+
+real	0m0.408s
+user	0m0.083s
+sys	0m0.165s
+
+real	0m0.386s
+user	0m0.076s
+sys	0m0.169s
+
+real	0m0.381s
+user	0m0.068s
+sys	0m0.167s
+
+real	0m0.569s
+user	0m0.249s
+sys	0m0.179s
+
+real	0m0.387s
+user	0m0.086s
+sys	0m0.153s
+
+real	0m3.178s
+user	0m1.898s
+sys	0m0.500s
+
+real	0m9.563s
+user	0m8.854s
+sys	0m0.320s
+
+real	0m0.955s
+user	0m0.601s
+sys	0m0.205s
+
+real	0m1.896s
+user	0m1.522s
+sys	0m0.227s
+
+real	0m23.566s
+user	0m22.924s
+sys	0m0.399s
+
+real	0m0.478s
+user	0m0.128s
+sys	0m0.177s
+
+real	0m11.441s
+user	0m10.829s
+sys	0m0.410s
+
+real	0m6.593s
+user	0m6.048s
+sys	0m0.302s
+
+real	0m0.607s
+user	0m0.292s
+sys	0m0.178s
+
+real	0m2.404s
+user	0m2.011s
+sys	0m0.226s
+
+real	0m0.718s
+user	0m0.388s
+sys	0m0.187s
+
+real	0m8.332s
+user	0m7.732s
+sys	0m0.381s
+
+real	0m13.089s
+user	0m11.527s
+sys	0m1.040s
+
+real	0m4.678s
+user	0m4.223s
+sys	0m0.267s
+
+real	0m9.947s
+user	0m9.345s
+sys	0m0.397s
+
+real	0m1.290s
+user	0m0.923s
+sys	0m0.220s
+
+real	0m0.588s
+user	0m0.266s
+sys	0m0.179s
+
+real	0m2.101s
+user	0m1.711s
+sys	0m0.242s
+
+real	0m1.411s
+user	0m1.040s
+sys	0m0.216s
+
+real	0m2.244s
+user	0m1.859s
+sys	0m0.226s
+
+real	0m3.386s
+user	0m2.963s
+sys	0m0.254s
+
+real	0m5.407s
+user	0m4.903s
+sys	0m0.300s
+
+real	0m7.478s
+user	0m6.923s
+sys	0m0.342s
+
+real	0m2.109s
+user	0m1.713s
+sys	0m0.217s
+
+real	0m0.501s
+user	0m0.187s
+sys	0m0.177s
+
+real	0m2.163s
+user	0m1.763s
+sys	0m0.213s
+
+real	0m18.514s
+user	0m17.821s
+sys	0m0.468s
+
+real	0m20.493s
+user	0m19.662s
+sys	0m0.504s
+
+real	0m0.538s
+user	0m0.216s
+sys	0m0.179s
+
+real	0m3.690s
+user	0m3.276s
+sys	0m0.244s
+
+real	0m4.468s
+user	0m3.959s
+sys	0m0.316s
+
+real	0m4.230s
+user	0m3.736s
+sys	0m0.295s
+
+real	0m24.600s
+user	0m23.763s
+sys	0m0.603s
+
+real	0m6.956s
+user	0m6.438s
+sys	0m0.339s
+
+real	0m4.938s
+user	0m4.370s
+sys	0m0.306s
+
+real	0m7.212s
+user	0m6.713s
+sys	0m0.316s
+
+real	0m16.345s
+user	0m15.618s
+sys	0m0.507s
+
+real	0m4.542s
+user	0m4.092s
+sys	0m0.280s
+
+real	0m6.743s
+user	0m6.220s
+sys	0m0.334s
+Space exceeded in Data Dependence Test in module_mp_wdm7_mp_wdm72d_
+Subdivide routine into smaller ones to avoid optimization loss
+
+real	0m4.436s
+user	0m3.943s
+sys	0m0.308s
+
+real	0m7.176s
+user	0m6.665s
+sys	0m0.326s
+
+real	0m0.832s
+user	0m0.510s
+sys	0m0.196s
+
+real	0m1.321s
+user	0m0.978s
+sys	0m0.209s
+
+real	0m0.403s
+user	0m0.086s
+sys	0m0.184s
+
+real	0m1.020s
+user	0m0.684s
+sys	0m0.195s
+
+real	0m0.544s
+user	0m0.230s
+sys	0m0.191s
+
+real	0m1.363s
+user	0m0.973s
+sys	0m0.230s
+
+real	0m0.792s
+user	0m0.475s
+sys	0m0.193s
+
+real	0m1.373s
+user	0m1.034s
+sys	0m0.201s
+
+real	0m0.747s
+user	0m0.387s
+sys	0m0.186s
+
+real	0m0.890s
+user	0m0.545s
+sys	0m0.205s
+
+real	0m5.011s
+user	0m4.491s
+sys	0m0.328s
+
+real	0m0.683s
+user	0m0.357s
+sys	0m0.191s
+
+real	0m0.381s
+user	0m0.068s
+sys	0m0.179s
+
+real	0m3.817s
+user	0m3.338s
+sys	0m0.292s
+
+real	0m5.026s
+user	0m4.542s
+sys	0m0.291s
+
+real	0m1.296s
+user	0m0.932s
+sys	0m0.229s
+
+real	0m41.924s
+user	0m41.150s
+sys	0m0.533s
+
+real	0m5.899s
+user	0m5.342s
+sys	0m0.317s
+
+real	9m36.836s
+user	9m32.076s
+sys	0m2.794s
+
+real	0m0.582s
+user	0m0.079s
+sys	0m0.169s
+
+real	0m2.202s
+user	0m1.798s
+sys	0m0.237s
+
+real	0m0.637s
+user	0m0.338s
+sys	0m0.177s
+
+real	0m0.543s
+user	0m0.228s
+sys	0m0.190s
+
+real	0m0.825s
+user	0m0.496s
+sys	0m0.193s
+
+real	0m1.762s
+user	0m1.416s
+sys	0m0.201s
+
+real	0m6.881s
+user	0m5.667s
+sys	0m1.007s
+
+real	0m0.375s
+user	0m0.095s
+sys	0m0.153s
+
+real	0m1.181s
+user	0m0.834s
+sys	0m0.207s
+
+real	0m4.600s
+user	0m4.161s
+sys	0m0.271s
+
+real	0m0.419s
+user	0m0.123s
+sys	0m0.166s
+
+real	0m0.433s
+user	0m0.132s
+sys	0m0.179s
+
+real	0m0.403s
+user	0m0.102s
+sys	0m0.183s
+
+real	0m0.493s
+user	0m0.187s
+sys	0m0.188s
+
+real	0m0.507s
+user	0m0.210s
+sys	0m0.178s
+
+real	0m3.124s
+user	0m2.729s
+sys	0m0.253s
+
+real	0m0.458s
+user	0m0.138s
+sys	0m0.183s
+
+real	0m0.861s
+user	0m0.523s
+sys	0m0.206s
+
+real	0m1.132s
+user	0m0.787s
+sys	0m0.209s
+
+real	0m0.630s
+user	0m0.350s
+sys	0m0.160s
+
+real	0m0.699s
+user	0m0.402s
+sys	0m0.176s
+
+real	0m0.625s
+user	0m0.320s
+sys	0m0.183s
+
+real	0m0.502s
+user	0m0.186s
+sys	0m0.171s
+
+real	0m0.572s
+user	0m0.247s
+sys	0m0.198s
+
+real	0m0.517s
+user	0m0.214s
+sys	0m0.174s
+
+real	0m0.398s
+user	0m0.111s
+sys	0m0.169s
+
+real	0m3.666s
+user	0m3.261s
+sys	0m0.248s
+
+real	0m3.848s
+user	0m3.409s
+sys	0m0.283s
+
+real	0m2.025s
+user	0m1.676s
+sys	0m0.211s
+
+real	0m5.487s
+user	0m4.939s
+sys	0m0.376s
+
+real	0m2.941s
+user	0m2.447s
+sys	0m0.305s
+
+real	0m0.726s
+user	0m0.378s
+sys	0m0.215s
+
+real	0m2.378s
+user	0m1.674s
+sys	0m0.396s
+
+real	0m3.427s
+user	0m2.961s
+sys	0m0.288s
+
+real	0m0.459s
+user	0m0.146s
+sys	0m0.182s
+
+real	0m3.439s
+user	0m2.307s
+sys	0m0.915s
+
+real	0m1.152s
+user	0m0.725s
+sys	0m0.245s
+
+real	0m0.472s
+user	0m0.162s
+sys	0m0.175s
+
+real	0m2.555s
+user	0m2.057s
+sys	0m0.323s
+
+real	0m0.712s
+user	0m0.381s
+sys	0m0.191s
+
+real	0m17.287s
+user	0m16.623s
+sys	0m0.409s
+
+real	0m0.615s
+user	0m0.254s
+sys	0m0.218s
+
+real	0m0.429s
+user	0m0.112s
+sys	0m0.195s
+
+real	0m0.601s
+user	0m0.293s
+sys	0m0.178s
+
+real	0m0.657s
+user	0m0.283s
+sys	0m0.223s
+
+real	0m1.200s
+user	0m0.837s
+sys	0m0.223s
+
+real	0m0.912s
+user	0m0.543s
+sys	0m0.234s
+
+real	0m2.370s
+user	0m1.958s
+sys	0m0.236s
+
+real	0m1.047s
+user	0m0.723s
+sys	0m0.205s
+
+real	0m1.290s
+user	0m0.947s
+sys	0m0.215s
+
+real	0m0.581s
+user	0m0.277s
+sys	0m0.163s
+
+real	0m0.564s
+user	0m0.256s
+sys	0m0.184s
+
+real	0m0.602s
+user	0m0.270s
+sys	0m0.198s
+
+real	0m0.512s
+user	0m0.207s
+sys	0m0.181s
+
+real	0m3.264s
+user	0m2.785s
+sys	0m0.285s
+
+real	0m1.470s
+user	0m1.051s
+sys	0m0.263s
+
+real	0m2.661s
+user	0m2.149s
+sys	0m0.297s
+
+real	0m0.969s
+user	0m0.641s
+sys	0m0.190s
+
+real	0m7.496s
+user	0m6.938s
+sys	0m0.354s
+
+real	0m1.442s
+user	0m1.092s
+sys	0m0.212s
+
+real	0m1.938s
+user	0m1.576s
+sys	0m0.219s
+
+real	1m1.573s
+user	1m0.860s
+sys	0m0.439s
+
+real	0m4.631s
+user	0m4.167s
+sys	0m0.249s
+
+real	0m2.845s
+user	0m2.365s
+sys	0m0.243s
+
+real	0m3.045s
+user	0m2.060s
+sys	0m0.455s
+
+real	0m0.931s
+user	0m0.505s
+sys	0m0.271s
+
+real	0m1.662s
+user	0m1.262s
+sys	0m0.254s
+
+real	0m1.364s
+user	0m1.029s
+sys	0m0.210s
+
+real	0m5.362s
+user	0m3.828s
+sys	0m1.334s
+
+real	0m3.409s
+user	0m2.409s
+sys	0m0.827s
+
+real	0m0.561s
+user	0m0.240s
+sys	0m0.176s
+
+real	0m5.383s
+user	0m4.119s
+sys	0m1.044s
+
+real	0m2.258s
+user	0m1.811s
+sys	0m0.271s
+
+real	0m2.977s
+user	0m1.850s
+sys	0m0.482s
+
+real	0m8.519s
+user	0m7.823s
+sys	0m0.464s
+/bin/sh: line 2: [: -eq: unary operator expected
+
+real	1m11.456s
+user	1m10.576s
+sys	0m0.576s
+
+real	0m2.074s
+user	0m1.640s
+sys	0m0.217s
+
+real	0m15.183s
+user	0m14.619s
+sys	0m0.340s
+
+real	0m27.083s
+user	0m26.144s
+sys	0m0.438s
+
+real	0m5.107s
+user	0m4.669s
+sys	0m0.254s
+
+real	0m0.521s
+user	0m0.216s
+sys	0m0.180s
+
+real	0m4.453s
+user	0m3.844s
+sys	0m0.355s
+
+real	0m0.596s
+user	0m0.291s
+sys	0m0.175s
+
+real	0m1.932s
+user	0m1.546s
+sys	0m0.232s
+
+real	0m0.405s
+user	0m0.086s
+sys	0m0.187s
+
+real	0m1.901s
+user	0m0.916s
+sys	0m0.490s
+
+real	0m2.698s
+user	0m2.199s
+sys	0m0.285s
+
+real	0m1.293s
+user	0m0.959s
+sys	0m0.209s
+
+real	0m0.735s
+user	0m0.413s
+sys	0m0.180s
+
+real	6m5.651s
+user	6m2.650s
+sys	0m1.923s
+
+real	0m4.707s
+user	0m4.086s
+sys	0m0.328s
+
+real	0m2.541s
+user	0m2.182s
+sys	0m0.200s
+
+real	0m3.739s
+user	0m3.351s
+sys	0m0.247s
+
+real	0m3.576s
+user	0m3.162s
+sys	0m0.250s
+
+real	1m48.926s
+user	1m46.540s
+sys	0m1.960s
+
+real	0m2.842s
+user	0m1.460s
+sys	0m0.597s
+
+real	0m6.268s
+user	0m4.865s
+sys	0m1.076s
+
+real	0m0.628s
+user	0m0.303s
+sys	0m0.192s
+
+real	0m2.338s
+user	0m1.343s
+sys	0m0.828s
+
+real	0m0.475s
+user	0m0.167s
+sys	0m0.168s
+
+real	0m0.352s
+user	0m0.073s
+sys	0m0.161s
+
+real	0m32.255s
+user	0m30.173s
+sys	0m1.722s
+
+real	1m55.316s
+user	1m51.314s
+sys	0m3.477s
+
+real	0m4.531s
+user	0m2.848s
+sys	0m1.388s
+
+real	0m4.875s
+user	0m3.712s
+sys	0m0.971s
+
+real	0m4.676s
+user	0m3.325s
+sys	0m1.036s
+
+real	0m1.179s
+user	0m0.632s
+sys	0m0.327s
+
+real	0m0.354s
+user	0m0.060s
+sys	0m0.166s
+
+real	0m3.892s
+user	0m3.307s
+sys	0m0.315s
+
+real	0m0.552s
+user	0m0.149s
+sys	0m0.258s
+0.77user 0.67system 0:02.21elapsed 65%CPU (0avgtext+0avgdata 185696maxresident)k
+121632inputs+118984outputs (0major+59279minor)pagefaults 0swaps
+
+real	0m7.636s
+user	0m7.045s
+sys	0m0.359s
+
+real	0m1.428s
+user	0m0.881s
+sys	0m0.355s
+0.55user 0.52system 0:01.28elapsed 83%CPU (0avgtext+0avgdata 151716maxresident)k
+94200inputs+103320outputs (0major+55812minor)pagefaults 0swaps
