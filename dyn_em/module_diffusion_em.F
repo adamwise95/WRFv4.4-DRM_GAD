@@ -8712,6 +8712,533 @@ END SUBROUTINE phy_bc
 !=======================================================================
 !=======================================================================
 
+!JDM
+!=======================================================================
+
+!JDM-SWiFT Compute surface boundary conditions, START
+
+!=======================================================================
+
+
+SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
+                              u_2, v_2, th, rdz,             &
+                              rho, tsk, cd, ch,              &
+                              moist, n_moist,                &
+                              dt, xtime,                     &
+                              heatflux,                      &
+                              zrough, z0,                    &
+                              !meso_force,                    & ! ASW remove meso scale options
+                              isfflx,                        &
+                              !meso_hfx, meso_tsk,            & ! ASW remove meso scale options
+                              ids, ide, jds, jde, kds, kde,  &
+                              ims, ime, jms, jme, kms, kme,  &
+                              its, ite, jts, jte, kts, kte   )
+
+!-----------------------------------------------------------------------
+!
+! Calculate surface forcing variables. Options include: 
+!
+!  1. Compute ustar and hfx using a skin temperature that is either 
+!    a) hardcoded into this subroutine
+!       --requires tke_heat_flux = -999.0 and meso_force = 0 in the namelist
+!    b) updated with mesoscale tendencies
+!       --requires meso_force = 2 in the namelist
+!
+!  2. Compute ustar using hfx that is either
+!    a) specified in the namelist 
+!       --requires tke_heat_flux = x, where x > -999.0, in the namelist 
+!    b) updated with mesoscale tendencies
+!       --requires meso_force = 1 in the namelist
+!
+! Begin declarations.
+
+   IMPLICIT NONE
+
+   INTEGER ,        INTENT(IN   ) ::        ids, ide, jds, jde, kds, kde, &
+                                            ims, ime, jms, jme, kms, kme, &
+                                            its, ite, jts, jte, kts, kte
+
+   REAL ,           INTENT(IN   ) ::        dt
+   REAL ,           INTENT(IN   ) ::        xtime
+   REAL ,           INTENT(IN   ) ::        heatflux
+   REAL ,           INTENT(IN   ) ::        zrough
+!   REAL ,           INTENT(IN   ) ::        meso_hfx
+!   REAL ,           INTENT(IN   ) ::        meso_tsk
+   INTEGER ,        INTENT(IN   ) ::        n_moist
+!   INTEGER ,        INTENT(IN   ) ::        meso_force
+   INTEGER ,        INTENT(IN   ) ::        isfflx
+
+   REAL , DIMENSION( ims:ime, kms:kme, jms:jme, n_moist),                 &
+          INTENT(IN) ::                                          moist           
+
+   REAL , DIMENSION( ims:ime, kms:kme, jms:jme), INTENT(IN   ) :: rdz, &
+                                                                  u_2, &
+                                                                  v_2
+
+   REAL , DIMENSION( ims:ime, kms:kme, jms:jme), INTENT(IN   ) :: th
+
+   REAL , DIMENSION( ims:ime, kms:kme, jms:jme), INTENT(IN   )   :: rho  
+   REAL , DIMENSION( ims:ime, jms:jme), INTENT(INOUT)            :: hfx
+   REAL , DIMENSION( ims:ime, jms:jme), INTENT(INOUT)            :: tsk
+   REAL , DIMENSION( ims:ime, jms:jme), INTENT(INOUT)            :: ust
+   REAL , DIMENSION( ims:ime, jms:jme), INTENT(INOUT)            :: z0
+   REAL , DIMENSION( ims:ime, jms:jme), INTENT(INOUT)            :: cd
+   REAL , DIMENSION( ims:ime, jms:jme), INTENT(INOUT)            :: ch
+
+! LOCAL VAR
+
+! les surface model constants (following Dyer and Hicks, 1974)
+!JDM   real, parameter :: epsi    = 1.e-6
+   real, parameter :: epsi    = 1.e-5
+   real, parameter :: beta    = 5.
+   real, parameter :: gamma   = 16.
+
+   INTEGER :: im, i, j, k, n
+   INTEGER :: i_start, i_end, j_start, j_end
+
+   INTEGER :: iter,max_iter
+
+!***************************************************************************
+!***************************************************************************
+!MODIFICA VARIABILI PER I FLUSSI
+!
+    REAL :: cpp
+    REAL :: ggg
+    REAL :: vk
+  
+    REAL :: u1
+    REAL :: v1
+    REAL :: z1
+    REAL :: th1
+    REAL :: rho1
+    REAL :: th0
+    REAL :: z0t
+    REAL :: ustar
+    REAL :: thstar
+    REAL :: wstar
+    REAL :: wth0
+    REAL :: t_0
+    REAL :: z1oz0
+    REAL :: z1oz0t
+    REAL :: molength
+    REAL :: wspd1
+    REAL :: tauxz
+    REAL :: tauyz
+    REAL :: zeta
+    REAL :: xi
+    REAL :: psim
+    REAL :: psih
+    REAL :: p_i
+    REAL :: cdn
+    REAL :: chn
+    REAL :: cd1
+    REAL :: ch1
+    REAL :: diff
+    REAL :: dtsdt     ! Specified surface temperature time rate of change [K s-1]
+    REAL :: t_start   ! Time in minutes from beginning of simulation to initialize tsk
+    REAL :: t_skin    ! Dummy variable for skin temperature [K]
+    REAL :: heat_flux ! Dummy variable for surface sensible heat flux [K m s-1]
+
+! End declarations.
+!-----------------------------------------------------------------------
+
+   i_start = its
+   i_end   = MIN(ite,ide-1)
+   j_start = jts
+   j_end   = MIN(jte,jde-1)
+
+   vk = 0.4
+   ggg = 9.81
+   cpp = 1004.6
+   t_0 = 300.0
+   p_i = 3.14159
+!   zrough = 0.05 !0.1 !0.05
+!   z0 = zrough
+!   z0t = zrough
+
+   dtsdt = 0.0
+   t_start = 0.0
+   t_skin = 0.0
+
+! write(*,200),'TSK 1',tsk(its+2,jts+2),th(its+2,kts,jts+2)
+
+   heat_flux = heatflux
+
+!   IF (meso_force .EQ. 1 ) THEN
+
+!      heat_flux = meso_hfx
+
+!   ELSE IF (meso_force .EQ. 2 ) THEN  ! There is no handy way to compute surface pressure in ideal WRF
+                                      ! so instead meso_tsk is skin temperature from the meso run converted
+!      t_skin = meso_tsk               ! to potential temperature using the surface pressure in input_sounding
+
+!! Use this block of code to specify your own surface heating rate or to initialize tsk
+!!
+!!      IF ( ( xtime .GT. 119.999 ) .AND. ( xtime .LT. 120.001 ) )   THEN ! initialize ts to neutral at time t 
+!!
+!!         print*,'Initiaizing TSK to <TH1>_xy and ch and cd = 0.01'
+!!
+!!         DO j = j_start, j_end
+!!         DO i = i_start, i_end
+!!  
+!!            tsk(i,j) = 0.058 !0.9225 ! Compute from T in wrf history at time = t, enter here, and restart.
+!!
+!!         END DO
+!!         END DO
+!!
+!!      IF ( xtime .GT. 120.0 )  dtsdt = -0.00013888 !-0.00027777 !-0.000185185 ! -2/3 K/hr ! Assign cooling for greater than time t
+!!
+!   ELSE IF ( ( heat_flux .EQ. -999.0 ) .AND. (meso_force .NE. 2 ) ) THEN
+!
+!      IF ( xtime .GT. t_start ) THEN ! Begin cooling at specified time
+!
+!         dtsdt = -0.00013888 
+!
+!         IF ( ( xtime .GT. (t_start - 0.1*dt) ) .AND. ( xtime .LT. (t_start + 0.1*dt) ) ) THEN ! Optionally initialize tsk at time t 
+! 
+!             t_skin = 0.058 - dtsdt*dt 
+!
+!         ENDIF
+!  
+!         t_skin = t_skin + dtsdt*dt 
+!
+!      ENDIF
+
+!      ENDIF
+
+!print*,'heat_flux, t_skin ',heat_flux,t_skin
+
+! End use this block...
+
+   DO j = j_start, j_end
+   DO i = i_start, i_end
+ 
+      z1 = 1.0/rdz(i,kts,j)
+
+      u1 = 0.5*( u_2(i,kts,j) + u_2(i+1,kts,j) ) 
+   
+      v1 = 0.5*( v_2(i,kts,j) + v_2(i,kts,j+1) ) 
+
+!!      th0 = tsk(i,j) + dtsdt*dt ! Only for surface pressure = 1000 mb
+!!
+!!      th1 = th(i,kts,j) ! + 300.0
+
+
+      th0 = t_skin ! Only for surface pressure = 1000 mb
+
+      th1 = th(i,kts,j) + t0 ! Must add t0 to compare th1 with t_skin
+
+      rho1 = rho(i,kts,j)
+
+      ustar = ust(i,j)
+
+      z0(i,j) = zrough ! Seems wasteful to keep reassigning, but maintains flexibility 
+
+      z1oz0 = z1/z0(i,j)
+
+      z1oz0t = z1oz0 !z1/z0t
+
+      IF (cd(i,j) .EQ. 0.0) THEN ! First time called, so initialize coefficients
+
+          cd(i,j)=vk**2/((alog(z1oz0))**2)
+       
+          ch(i,j)=vk**2/((alog(z1oz0t))**2)
+
+      ENDIF
+
+! Wind speed at z1
+
+       wspd1 = SQRT(u1*u1+v1*v1 + 0.000001)
+ 
+! Surface stress
+
+       cd1 = cd(i,j)
+
+       ch1 = ch(i,j)
+
+       tauxz = cd1*wspd1*u1
+
+       tauyz = cd1*wspd1*v1
+  
+       ustar = (tauxz**2+tauyz**2)**0.25
+
+       diff = 1.0
+
+! Surface sensible heat flux
+    
+       wth0 = ch1*wspd1*(th0-th1)
+   
+       IF (heat_flux .NE. -999.0) wth0 = heat_flux/(cpp*rho1) ! Enforce namelist value, W/m^2 -> K m/s ! for constant value
+
+!JDM Heat Flux Function Begin
+
+!          IF ( (xtime .GT. 899.999) .AND. (xtime .LT. 959.999) ) heat_flux = 100.0*((xtime-899.999)/60.0) ! Ramp up to 100 over 1 hour, hr 15-16
+
+!          IF ( (xtime .GE. 959.999) .AND. (xtime .LT. 1019.999) ) heat_flux = 100.000*((1019.999-xtime)/60.0) ! Ramp down to 0 over 1 hour, hr 16-17
+
+!          IF ( (xtime .GE. 1019.999) .AND. (xtime .LT. 1079.999 ) ) heat_flux = 10.000*((1019.999-xtime)/60.0) ! Ramp down to -10 over 1 hour, hr 17-18
+
+!          IF ( xtime .GE. 1079.999 ) heat_flux = -10.0 ! Constant value of -10 hereafter, hr > 18
+
+!          wth0 = heat_flux/(cpp*rho1) 
+
+!JDM Heat Flux Function Begin
+
+       iter = 0 
+
+!---- Start iterating ---------------------------------------------
+
+       do while ( diff .GT. epsi ) 
+
+! Surface parameters
+
+          if ( ustar .ne. 0.0 ) then 
+
+             thstar=wth0/ustar
+
+          else
+
+             thstar = 0.0
+
+          endif
+
+          if ( thstar .ne. 0.0 ) then 
+
+             wstar = wth0/thstar
+
+          else
+
+             wstar = 0.0
+
+          endif
+
+          if ( ( abs(wth0) .gt. 0.0 ) .and. ( ustar .gt. 0.0 ) ) then
+
+! Monin-Obukhov length scale 
+
+             molength = -((ustar**3)*t_0)/(vk*ggg*wth0)
+
+! M-O Stability paramter
+
+             zeta=z1/molength
+
+          endif
+
+! Surface heat flux = 0, friction velocity > 0
+
+          if ( ( abs(wth0) .eq. 0.0 ) .and. ( ustar .gt. 0.0 ) ) then
+
+             zeta = 0.0
+
+          endif
+
+! Free convection - this is temporary fix, needs to be modified
+
+          if ( ( abs(wth0) .ge. 0.0 ) .and. ( ustar .eq. 0.0 ) ) then
+
+             zeta = -3.0
+
+          endif
+
+! Surface heat flux = 0, friction velocity = 0
+
+          if ( ( abs(wth0) .eq. 0.0 ) .and. ( ustar .eq. 0.0 ) ) then
+
+             zeta = 0.0
+
+          endif
+
+!   WRITE(message,*)' z/L     = ',zeta
+!   CALL wrf_message(message)
+
+! Convective case
+
+          if ((zeta .lt. -epsi) .and. (zeta .ge. -2.0)) then
+
+!             print*,'convective,zeta,ch1,hfx(i,j)',zeta,ch1,wth0
+         
+            xi = 1.0/((1.0-gamma*zeta)**0.25)
+            psim = alog(0.5*(1.0+xi**2)*(0.5*(1.0+xi))**2) - 2.0*atan(xi)+0.5*p_i
+            psih = 2.0*alog(0.5*(1.0+xi**2))
+
+!   WRITE(message,*)' Convective case ' 
+!   CALL wrf_message(message)
+!   WRITE(message,*)' psim, psih, psiq ',psim,psih,psiq 
+!   CALL wrf_message(message)
+
+          endif
+
+! Stably statified case
+
+          if ((zeta .gt. +epsi) .and. (zeta .lt. 1.0)) then
+
+            psim = -beta*zeta
+            psih = -beta*zeta
+
+!   WRITE(message,*)' Stable case ' 
+!   CALL wrf_message(message)
+!   WRITE(message,*)' psim, psih, psiq ',psim,psih,psiq 
+!   CALL wrf_message(message)
+
+          endif
+
+! Neutral case
+
+          if ((zeta .le. +epsi) .and. (zeta .ge. -epsi)) then
+
+            psim = 0.0
+            psih = 0.0
+
+!   WRITE(message,*)' Neutral case ' 
+!   CALL wrf_message(message)
+!   WRITE(message,*)' psim, psih, psiq ',psim,psih,psiq 
+!   CALL wrf_message(message)
+
+          endif
+
+! Drag coefficients
+
+          if ((zeta .gt. -2.0) .and. (zeta .lt. 1.0)) then
+
+            cdn = vk**2/((alog(z1oz0)-psim)**2)
+            chn = vk**2/((alog(z1oz0t)-psim)*(alog(z1oz0t)-psih))
+
+          else
+
+            cdn = 0.0
+            chn = 0.0
+
+          endif
+
+! Surface stress
+
+          tauxz = cdn*wspd1*u1
+          tauyz = cdn*wspd1*v1
+
+          ustar =(tauxz**2+tauyz**2)**0.25
+
+! Surface sensible heat flux
+
+          wth0 = chn*wspd1*(th0-th1)
+
+          IF (heat_flux .NE. -999.0) wth0 = heat_flux/(cpp*rho1) ! Enforce namelist value, W/m^2 -> K m/s
+
+!JDM Heat Flux Function Begin
+
+!          IF ( (xtime .GT. 899.999 ) .AND. (xtime .LT. 959.999 ) ) heat_flux = 100.0*((xtime-899.999)/60.0) ! Ramp up to 100 over 1 hour, hr 15-16
+
+!          IF ( (xtime .GE. 959.999) .AND. (xtime .LT. 1019.999 ) ) heat_flux = 100.000*((1019.999-xtime)/60.0) ! Ramp down to 0 over 1 hour, hr 16-17
+
+!          IF ( (xtime .GE. 1019.999) .AND. (xtime .LT. 1079.999 ) ) heat_flux = 10.000*((1019.999-xtime)/60.0) ! Ramp down to -10 over 1 hour, hr 17-18
+
+!          IF ( xtime .GE. 1079.999 ) heat_flux = -10.0 ! Constant value of -10 hereafter, hr > 18
+
+!          wth0 = heat_flux/(cpp*rho1) 
+
+!JDM Heat Flux Function End
+
+          diff = abs(cdn-cd1)+abs(chn-ch1)
+
+          cd1 = cdn
+          ch1 = chn
+
+          iter = iter + 1
+
+       IF (iter .EQ. 1000 ) THEN 
+
+          print*,'over 1000 iterations in calc_surf_ust_hs,i,j',i,j
+          print*,'cd1,cdn,ch1,chn',cd1,cdn,ch1,chn
+         
+          goto 100
+
+       ENDIF
+
+       enddo
+
+100 continue
+
+!---- End iterating (while loop) -------------------------------------
+
+      ust(i,j) = ustar
+      hfx(i,j) = wth0*cpp*rho1
+      tsk(i,j) = th0            !only for surface pressure = 1000 mb
+      cd(i,j) = cdn
+      ch(i,j) = chn
+
+!JDM     IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) ) print*,ust(i,j),hfx(i,j),tsk(i,j)
+
+  ENDDO !i
+  ENDDO !j   
+
+!   write(*,200),'TSK 2',tsk(its+2,jts+2),cd(its+2,jts+2),ch(its+2,jts+2)
+
+!print*,'LEAVING SURFACE LAYER, ust, hfx,',ust(its+5,jts+5),hfx(its+5,jts+5)
+!print*,'LEAVING SURFACE LAYER, rho, z0',rho(its+5,kts,jts+5),z0(its+5,jts+5)
+
+200 format (a5,1x,3F20.16)
+
+END SUBROUTINE calc_surf_ust_hs
+
+!=======================================================================
+
+!JDM-SWiFT Compute surface boundary conditions, END
+
+!JDM-SWiFT Assign ustm to ust, BEGIN
+
+!=======================================================================
+
+    SUBROUTINE ustm_to_ust( ust, ustm,                            &
+                            ids, ide, jds, jde, kds, kde,         &
+                            ims, ime, jms, jme, kms, kme,         &
+                            its, ite, jts, jte, kts, kte          )
+
+!-----------------------------------------------------------------------
+! Begin declarations.
+
+    IMPLICIT NONE
+
+    INTEGER, INTENT( IN )  &
+    :: ids, ide, jds, jde, kds, kde,  &
+       ims, ime, jms, jme, kms, kme,  &
+       its, ite, jts, jte, kts, kte
+
+    REAL, DIMENSION( ims:ime, jms:jme ), INTENT( INOUT )  &
+    :: ustm
+
+    REAL, DIMENSION( ims:ime, jms:jme ), INTENT( OUT )  &
+    :: ust
+
+! Local variables.
+
+    INTEGER  &
+    :: i, j
+
+!    REAL  &
+!    :: ustmin
+
+
+! End declarations.
+!-----------------------------------------------------------------------
+ 
+!    ustmin = 0.01
+
+    DO i = ims, ime
+    DO j = jms, jme
+
+!      ustm(i,j) =  MAX( ustm(i,j),ustmin )
+      ust(i,j)  =   ustm(i,j)
+
+    END DO
+    END DO
+
+    END SUBROUTINE ustm_to_ust
+
+!JDM
+
+
+!=======================================================================
+!=======================================================================
+
     SUBROUTINE tridiag(n,a,b,c,d)
 !! to solve system of linear eqs on tridiagonal matrix n times n
 !! after Peaceman and Rachford, 1955
