@@ -8864,7 +8864,7 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
 
    heat_flux = heatflux
 
-   IF (heat_flux .LT. -0.001)
+   IF (heat_flux .LT. -0.001) THEN
         dtsdmin = heat_flux/1000/3600 ! ASW heat flux input divided by 1000 is K/hr cooling rate (divided by 3600 for K/min)
    ENDIF
    t_start = 0.0
@@ -8932,7 +8932,7 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
       v1 = 0.5*( v_2(i,kts,j) + v_2(i,kts,j+1) ) 
 
 ! ASW
-IF (heat_flux .LT. -0.001)
+IF (heat_flux .LT. -0.001) THEN
       th0 = tsk(i,j) + dtsdmin*xtime ! Only for surface pressure = 1000 mb
 
       th1 = th(i,kts,j) ! + 300.0
