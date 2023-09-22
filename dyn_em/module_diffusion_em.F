@@ -8835,6 +8835,7 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
     REAL :: ch1
     REAL :: diff
     REAL :: dtsdt     ! Specified surface temperature time rate of change [K s-1]
+    REAL :: dtsdmin   ! Specified surface temperature time rate of change [K min] ! ASW easier since xtime is in min
     REAL :: t_start   ! Time in minutes from beginning of simulation to initialize tsk
     REAL :: t_skin    ! Dummy variable for skin temperature [K]
     REAL :: heat_flux ! Dummy variable for surface sensible heat flux [K m s-1]
