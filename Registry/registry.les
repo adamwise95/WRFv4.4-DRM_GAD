@@ -6,11 +6,20 @@ state   real    m12     ikjf    nba_mij		1       -       h       "m12"   	"12 co
 state   real    m13     ikjf    nba_mij		1       -       h       "m13"   	"13 component of NBA subgrid stress tensor"     "m2 s-2"
 state   real    m23     ikjf    nba_mij		1       -       h       "m23"  		"23 component of NBA subgrid stress tensor"     "m2 s-2"
 
+### ASW heat and mousture flux outputs
+state   real    mh1     ikjf    nba_mij     1       -       h       "mh1"       "zonal heat flux (not from NBA model)     "     "K m s-1"           
+state   real    mh2     ikjf    nba_mij     1       -       h       "mh2"       "meridional heat flux (not from NBA model)"     "K m s-1"           
+state   real    mh3     ikjf    nba_mij     1       -       h       "mh3"       "vertical heat flux (not from NBA model)  "     "K m s-1"           
+state   real    mq1     ikjf    nba_mij     1       -       h       "mq1"       "zonal vapor flux (not from NBA model)    "     "m s-1"             
+state   real    mq2     ikjf    nba_mij     1       -       h       "mq2"       "meridional vapor flux (not from NBA model)"    "m s-1"             
+state   real    mq3     ikjf    nba_mij     1       -       h       "mq3"       "vertical vapor flux (not from NBA model) "     "m s-1"     
+
 state   real    -       ikjf    nba_rij		1       -       -       -	
 state   real    r12     ikjf    nba_rij		1       -       -       "r12"   	"12 component of rotation tensor"               "s-1"
 state   real    r13     ikjf    nba_rij		1       -       -       "r13"   	"13 component of rotation tensor"               "s-1"
 state   real    r23     ikjf    nba_rij		1       -       -       "r23"   	"23 component of rotation tensor"               "s-1"
 state   real    smnsmn  ikjf    nba_rij		1       -       -       "smnsmn"   	"Smn*Smn"               			"s-2"
+
 
 ## MMC (surf layer)
 rconfig integer spec_ideal          namelist,dynamics   1                 0  -  "flag to activate spec_hfx and spec_z0 in sf_sfclay_physics=1 and spec_l
@@ -315,9 +324,9 @@ rconfig integer dwl_stab_opt    namelist,dynamics   max_domains     0       -   
 #-------------------------------------------------------------------------------
 
 package	nosfs	sfs_opt==0      -       -
-package	nba1	sfs_opt==1      -       nba_mij:m11,m22,m33,m12,m13,m23;nba_rij:r12,r13,r23,smnsmn
-package	nba2	sfs_opt==2      -       nba_mij:m11,m22,m33,m12,m13,m23;nba_rij:r12,r13,r23,smnsmn
-package mout	m_opt==1		-       nba_mij:m11,m22,m33,m12,m13,m23
+package	nba1	sfs_opt==1      -       nba_mij:m11,m22,m33,m12,m13,m23,mh1,mh2,mh3,mq1,mq2,mq3;nba_rij:r12,r13,r23,smnsmn
+package	nba2	sfs_opt==2      -       nba_mij:m11,m22,m33,m12,m13,m23,mh1,mh2,mh3,mq1,mq2,mq3;nba_rij:r12,r13,r23,smnsmn
+package mout	m_opt==1		-       nba_mij:m11,m22,m33,m12,m13,m23,mh1,mh2,mh3,mq1,mq2,mq3
 
 #---------------------------------- DRM packages -------------------------------------#
 package norsfs	rsfs_opt==6		-	-
