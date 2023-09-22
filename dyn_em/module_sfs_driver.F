@@ -4526,7 +4526,7 @@ IF ( config_flags%dwl_opt .EQ. 1 ) THEN
 !_______________________________________________________________________
 
 IF ( config_flags%rsfs_opt .GE. 0 ) THEN ! ASW only enter this for DRM, not for DWL
-print*,'should not be here'
+!print*,'should not be here'
 
 
 IF ( config_flags%rsfs_opt .EQ. 6 ) THEN
