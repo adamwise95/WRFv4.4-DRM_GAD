@@ -8790,8 +8790,8 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
 ! les surface model constants (following Dyer and Hicks, 1974)
 !JDM   real, parameter :: epsi    = 1.e-6
    real, parameter :: epsi    = 1.e-5
-   real, parameter :: beta    = 5.
-   real, parameter :: gamma   = 16.
+   real, parameter :: beta    = 4.7 ! ASW Businger et al. 1971 to match Bowen ! JDM 5.
+   real, parameter :: gamma   = 15 ! ASW Businger et al. 1971 to match Bowen ! JDM 16.
 
    INTEGER :: im, i, j, k, n
    INTEGER :: i_start, i_end, j_start, j_end
