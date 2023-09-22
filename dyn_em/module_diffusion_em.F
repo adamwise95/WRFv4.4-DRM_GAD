@@ -8856,13 +8856,18 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
 !   z0 = zrough
 !   z0t = zrough
 
-   dtsdt = 0.0
-   t_start = 0.0
-   t_skin = 0.0
+   
+
 
 ! write(*,200),'TSK 1',tsk(its+2,jts+2),th(its+2,kts,jts+2)
 
    heat_flux = heatflux
+
+   IF (heat_flux .LT. -0.001)
+        dtsdmin = heat_flux/1000/3600 ! ASW heat flux input divided by 1000 is K/hr cooling rate (divided by 3600 for K/min)
+   ENDIF
+   t_start = 0.0
+   t_skin = 0.0
 
 !   IF (meso_force .EQ. 1 ) THEN
 
@@ -8910,6 +8915,12 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
 
 ! End use this block...
 
+
+! ASW attempt to cool surface
+
+
+
+
    DO j = j_start, j_end
    DO i = i_start, i_end
  
@@ -8919,10 +8930,13 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
    
       v1 = 0.5*( v_2(i,kts,j) + v_2(i,kts,j+1) ) 
 
-!!      th0 = tsk(i,j) + dtsdt*dt ! Only for surface pressure = 1000 mb
-!!
-!!      th1 = th(i,kts,j) ! + 300.0
+! ASW
+IF (heat_flux .LT. -0.001)
+      th0 = tsk(i,j) + dtsdmin*xtime ! Only for surface pressure = 1000 mb
 
+      th1 = th(i,kts,j) ! + 300.0
+ENDIF
+! ASW
 
       th0 = t_skin ! Only for surface pressure = 1000 mb
 
