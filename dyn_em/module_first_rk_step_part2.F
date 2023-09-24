@@ -666,6 +666,26 @@ BENCH_START(tke_diff_bc_tim)
          !$OMP END PARALLEL DO
 BENCH_END(tke_diff_bc_tim)
 
+!JDM assign USTM to UST for the history ASW
+ 
+IF (config_flags%isfflx .EQ. 3 ) THEN
+ 
+          !$OMP PARALLEL DO   &
+          !$OMP PRIVATE ( ij )
+          DO ij = 1 , grid%num_tiles
+ 
+             CALL ustm_to_ust (  grid%ust, grid%ustm,                  &
+                                 ids, ide, jds, jde, kds, kde,         &
+                                 ims, ime, jms, jme, kms, kme,         &
+                                 grid%i_start(ij), grid%i_end(ij),     &
+                                 grid%j_start(ij), grid%j_end(ij),     &
+                                 k_start    , k_end                    )
+          ENDDO
+          !$OMP END PARALLEL DO
+ 
+ENDIF
+!JDM
+
 BENCH_START(deform_div_tim)
 
          !$OMP PARALLEL DO   &

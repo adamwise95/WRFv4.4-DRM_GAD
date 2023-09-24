@@ -8865,7 +8865,7 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
    heat_flux = heatflux
 
    IF (heat_flux .LT. -0.001) THEN
-        dtsdmin = heat_flux/1000/3600 ! ASW heat flux input divided by 1000 is K/hr cooling rate (divided by 3600 for K/min)
+        dtsdmin = heat_flux/1000/60 ! ASW heat flux input divided by 1000 is K/hr cooling rate (divided by 60 for K/min)
    ENDIF
    t_start = 0.0
    t_skin = 0.0
@@ -8933,15 +8933,20 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
 
 ! ASW
 IF (heat_flux .LT. -0.001) THEN
-      th0 = tsk(i,j) + dtsdmin*xtime ! Only for surface pressure = 1000 mb
+      !th0 = tsk(i,j) + dtsdmin*xtime ! Only for surface pressure = 1000 mb
 
-      th1 = th(i,kts,j) ! + 300.0
+      th0 = dtsdmin*xtime + 300.0 ! ASW need to add initial temp here
+
+
+      !print*,'heat_flux, t_skin ',heat_flux,t_skin
+      th1 = th(i,kts,j)  + 300.0
+      IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'th0, th1, xtime ',th0,th1,xtime
 ENDIF
 ! ASW
 
-      th0 = t_skin ! Only for surface pressure = 1000 mb
+      !th0 = t_skin ! Only for surface pressure = 1000 mb
 
-      th1 = th(i,kts,j) + t0 ! Must add t0 to compare th1 with t_skin
+      !th1 = th(i,kts,j) + t0 ! Must add t0 to compare th1 with t_skin
 
       rho1 = rho(i,kts,j)
 
@@ -8983,7 +8988,10 @@ ENDIF
     
        wth0 = ch1*wspd1*(th0-th1)
    
-       IF (heat_flux .NE. -999.0) wth0 = heat_flux/(cpp*rho1) ! Enforce namelist value, W/m^2 -> K m/s ! for constant value
+       !IF (heat_flux .NE. -999.0) wth0 = heat_flux/(cpp*rho1) ! Enforce namelist value, W/m^2 -> K m/s ! for constant value
+
+       ! ASW
+       IF (heat_flux .GT. -0.001) wth0 = heat_flux/(cpp*rho1) ! Enforce namelist value, W/m^2 -> K m/s ! for constant value
 
 !JDM Heat Flux Function Begin
 
@@ -9087,6 +9095,7 @@ ENDIF
 
           if ((zeta .gt. +epsi) .and. (zeta .lt. 1.0)) then
 
+            IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'Stably stratified ',molength ! ASW
             psim = -beta*zeta
             psih = -beta*zeta
 
@@ -9132,11 +9141,16 @@ ENDIF
 
           ustar =(tauxz**2+tauyz**2)**0.25
 
+          IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'cdn,tauxz,tauyz,zeta,psim,psih ',cdn,tauxz,tauyz,zeta,psim,psih
+          IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'th0,ustar,wstar,thstar ',th0,ustar,wstar,thstar
+
 ! Surface sensible heat flux
 
           wth0 = chn*wspd1*(th0-th1)
 
-          IF (heat_flux .NE. -999.0) wth0 = heat_flux/(cpp*rho1) ! Enforce namelist value, W/m^2 -> K m/s
+          !IF (heat_flux .NE. -999.0) wth0 = heat_flux/(cpp*rho1) ! Enforce namelist value, W/m^2 -> K m/s
+          ! ASW
+          IF (heat_flux .GT. -0.001) wth0 = heat_flux/(cpp*rho1) ! Enforce namelist value, W/m^2 -> K m/s ! for constant value
 
 !JDM Heat Flux Function Begin
 
