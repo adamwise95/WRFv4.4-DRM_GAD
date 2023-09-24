@@ -8945,8 +8945,8 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
 ! les surface model constants (following Dyer and Hicks, 1974)
 !JDM   real, parameter :: epsi    = 1.e-6
    real, parameter :: epsi    = 1.e-5
-   real, parameter :: beta    = 5.
-   real, parameter :: gamma   = 16.
+   real, parameter :: beta    = 4.7 ! ASW Businger et al. 1971 to match Bowen ! JDM 5.
+   real, parameter :: gamma   = 15 ! ASW Businger et al. 1971 to match Bowen ! JDM 16.
 
    INTEGER :: im, i, j, k, n
    INTEGER :: i_start, i_end, j_start, j_end
@@ -8990,6 +8990,7 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
     REAL :: ch1
     REAL :: diff
     REAL :: dtsdt     ! Specified surface temperature time rate of change [K s-1]
+    REAL :: dtsdmin   ! Specified surface temperature time rate of change [K min] ! ASW easier since xtime is in min
     REAL :: t_start   ! Time in minutes from beginning of simulation to initialize tsk
     REAL :: t_skin    ! Dummy variable for skin temperature [K]
     REAL :: heat_flux ! Dummy variable for surface sensible heat flux [K m s-1]
@@ -9011,13 +9012,18 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
 !   z0 = zrough
 !   z0t = zrough
 
-   dtsdt = 0.0
-   t_start = 0.0
-   t_skin = 0.0
+   
+
 
 ! write(*,200),'TSK 1',tsk(its+2,jts+2),th(its+2,kts,jts+2)
 
    heat_flux = heatflux
+
+   IF (heat_flux .LT. -0.001) THEN
+        dtsdmin = heat_flux/1000/60 ! ASW heat flux input divided by 1000 is K/hr cooling rate (divided by 60 for K/min)
+   ENDIF
+   t_start = 0.0
+   t_skin = 0.0
 
 !   IF (meso_force .EQ. 1 ) THEN
 
@@ -9065,6 +9071,12 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
 
 ! End use this block...
 
+
+! ASW attempt to cool surface
+
+
+
+
    DO j = j_start, j_end
    DO i = i_start, i_end
  
@@ -9074,14 +9086,22 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
    
       v1 = 0.5*( v_2(i,kts,j) + v_2(i,kts,j+1) ) 
 
-!!      th0 = tsk(i,j) + dtsdt*dt ! Only for surface pressure = 1000 mb
-!!
-!!      th1 = th(i,kts,j) ! + 300.0
+! ASW
+IF (heat_flux .LT. -0.001) THEN
+      !th0 = tsk(i,j) + dtsdmin*xtime ! Only for surface pressure = 1000 mb
+
+      th0 = dtsdmin*xtime + 300.0 ! ASW need to add initial temp here
 
 
-      th0 = t_skin ! Only for surface pressure = 1000 mb
+      !print*,'heat_flux, t_skin ',heat_flux,t_skin
+      th1 = th(i,kts,j)  + 300.0
+      IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'th0, th1, xtime ',th0,th1,xtime
+ENDIF
+! ASW
 
-      th1 = th(i,kts,j) + t0 ! Must add t0 to compare th1 with t_skin
+      !th0 = t_skin ! Only for surface pressure = 1000 mb
+
+      !th1 = th(i,kts,j) + t0 ! Must add t0 to compare th1 with t_skin
 
       rho1 = rho(i,kts,j)
 
@@ -9123,7 +9143,10 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
     
        wth0 = ch1*wspd1*(th0-th1)
    
-       IF (heat_flux .NE. -999.0) wth0 = heat_flux/(cpp*rho1) ! Enforce namelist value, W/m^2 -> K m/s ! for constant value
+       !IF (heat_flux .NE. -999.0) wth0 = heat_flux/(cpp*rho1) ! Enforce namelist value, W/m^2 -> K m/s ! for constant value
+
+       ! ASW
+       IF (heat_flux .GT. -0.001) wth0 = heat_flux/(cpp*rho1) ! Enforce namelist value, W/m^2 -> K m/s ! for constant value
 
 !JDM Heat Flux Function Begin
 
@@ -9227,6 +9250,7 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
 
           if ((zeta .gt. +epsi) .and. (zeta .lt. 1.0)) then
 
+            IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'Stably stratified ',molength ! ASW
             psim = -beta*zeta
             psih = -beta*zeta
 
@@ -9272,11 +9296,16 @@ SUBROUTINE calc_surf_ust_hs ( ust, hfx,                      &
 
           ustar =(tauxz**2+tauyz**2)**0.25
 
+          IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'cdn,tauxz,tauyz,zeta,psim,psih ',cdn,tauxz,tauyz,zeta,psim,psih
+          IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'th0,ustar,wstar,thstar ',th0,ustar,wstar,thstar
+
 ! Surface sensible heat flux
 
           wth0 = chn*wspd1*(th0-th1)
 
-          IF (heat_flux .NE. -999.0) wth0 = heat_flux/(cpp*rho1) ! Enforce namelist value, W/m^2 -> K m/s
+          !IF (heat_flux .NE. -999.0) wth0 = heat_flux/(cpp*rho1) ! Enforce namelist value, W/m^2 -> K m/s
+          ! ASW
+          IF (heat_flux .GT. -0.001) wth0 = heat_flux/(cpp*rho1) ! Enforce namelist value, W/m^2 -> K m/s ! for constant value
 
 !JDM Heat Flux Function Begin
 
