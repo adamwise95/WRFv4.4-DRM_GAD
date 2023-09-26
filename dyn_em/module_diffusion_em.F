@@ -9095,7 +9095,7 @@ IF (heat_flux .LT. -0.001) THEN
 
       !print*,'heat_flux, t_skin ',heat_flux,t_skin
       th1 = th(i,kts,j)  + 300.0
-      IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'th0, th1, xtime ',th0,th1,xtime
+      !IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'th0, th1, xtime ',th0,th1,xtime
 ENDIF
 ! ASW
 
