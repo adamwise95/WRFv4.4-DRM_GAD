@@ -9250,7 +9250,7 @@ ENDIF
 
           if ((zeta .gt. +epsi) .and. (zeta .lt. 1.0)) then
 
-            IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'Stably stratified ',molength ! ASW
+            !IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'Stably stratified ',molength ! ASW
             psim = -beta*zeta
             psih = -beta*zeta
 
@@ -9296,8 +9296,8 @@ ENDIF
 
           ustar =(tauxz**2+tauyz**2)**0.25
 
-          IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'cdn,tauxz,tauyz,zeta,psim,psih ',cdn,tauxz,tauyz,zeta,psim,psih
-          IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'th0,ustar,wstar,thstar ',th0,ustar,wstar,thstar
+          !IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'cdn,tauxz,tauyz,zeta,psim,psih ',cdn,tauxz,tauyz,zeta,psim,psih
+          !IF ( ( i .eq. its+5 ) .and. ( j .eq. jts+5 ) )  print*,'th0,ustar,wstar,thstar ',th0,ustar,wstar,thstar
 
 ! Surface sensible heat flux
 
