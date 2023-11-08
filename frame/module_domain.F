@@ -2132,6 +2132,7 @@ CONTAINS
       SUBROUTINE domain_clock_get( grid, current_time,                &
                                          current_timestr,             &
                                          current_timestr_frac,        &
+                                         current_timestr_frac_long,   & ! ASW/DSW
                                          start_time, start_timestr,   &
                                          stop_time, stop_timestr,     &
                                          time_step, time_stepstr,     &
@@ -2147,6 +2148,7 @@ CONTAINS
         TYPE(WRFU_Time),         INTENT(  OUT), OPTIONAL :: current_time
         CHARACTER (LEN=*),       INTENT(  OUT), OPTIONAL :: current_timestr
         CHARACTER (LEN=*),       INTENT(  OUT), OPTIONAL :: current_timestr_frac
+        CHARACTER (LEN=*),       INTENT(  OUT), OPTIONAL :: current_timestr_frac_long
         TYPE(WRFU_Time),         INTENT(  OUT), OPTIONAL :: start_time
         CHARACTER (LEN=*),       INTENT(  OUT), OPTIONAL :: start_timestr
         TYPE(WRFU_Time),         INTENT(  OUT), OPTIONAL :: stop_time
