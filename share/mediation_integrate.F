@@ -26,6 +26,98 @@ SUBROUTINE med_calc_model_time ( grid , config_flags )
 
 END SUBROUTINE med_calc_model_time
 
+!DJW: added this subroutine to output velocities and tracer concentrations at
+!     each timestep.
+SUBROUTINE station_hist_out( grid, config_flags )
+    USE module_domain,    ONLY : domain, get_ijk_from_grid, domain_clock_get
+    USE module_configure, ONLY : model_config_rec, grid_config_rec_type
+    USE module_driver_constants
+    IMPLICIT NONE
+    !arguments
+    TYPE(domain)                              :: grid
+    TYPE(grid_config_rec_type), INTENT(IN   ) :: config_flags
+    !local data
+    INTEGER                                   :: ids, ide, jds, jde, kds, kde, &
+                                                 ims, ime, jms, jme, kms, kme, &
+                                                 ips, ipe, jps, jpe, kps, kpe, &
+                                                 i, ic, j, jc, k, kc, sta, &
+                                                 i_end, j_end, k_end, offset
+    REAL                                      :: u, v, w, t !ASW
+    LOGICAL                                   :: below_IB
+    CHARACTER(LEN=32)                         :: timestr
+    CHARACTER(LEN=256)                        :: message
+
+    CALL get_ijk_from_grid( grid, &
+                            ids, ide, jds, jde, kds, kde, &
+                            ims, ime, jms, jme, kms, kme, &
+                            ips, ipe, jps, jpe, kps, kpe )
+    i_end = MIN(ipe, ide-1)
+    j_end = MIN(jpe, jde-1)
+    k_end = MIN(kpe, kde-1)
+    IF ( (config_flags%station_box .NE. 1) .AND. &
+         (config_flags%station_box .NE. 3) ) THEN
+        write(message,'(A,I2,A,I1,A)') "ERROR: station_box=",config_flags%station_box," for grid%id=",grid%id,". Values of 1 and 3 are supported."
+        CALL wrf_error_fatal(message)
+    ENDIF
+    offset = (config_flags%station_box-1)/2
+    DO sta=1,max_stations
+        IF (grid%id .EQ. model_config_rec%station_id(sta)) THEN
+            !(ic, kc, jc) is the point of interest. We are going to output a u,
+            !v, and w from a box of surrounding points.
+            ic = model_config_rec%station_i(sta)
+            kc = model_config_rec%station_k(sta)
+            jc = model_config_rec%station_j(sta)
+            IF ( (ic .GE. ips) .AND. (ic .LE. i_end) .AND. &
+                 (kc .GE. kps) .AND. (kc .LE. k_end) .AND. &
+                 (jc .GE. jps) .AND. (jc .LE. j_end) ) THEN
+                CALL domain_clock_get(grid, current_timestr_frac_long=timestr)
+                write(2000+sta, '(A)', ADVANCE='NO') timestr
+                !Note that the order points are written is starting from the
+                !south-west bottom point, progressing east, repeating with the
+                !next northern row, and finally advancing upwards once each
+                !horizontal plane of points to output is finished.
+                DO k=kc-offset,kc+offset
+                DO j=jc-offset,jc+offset
+                DO i=ic-offset,ic+offset
+                    !Check that all points to be used are above the IB
+                    below_IB = .FALSE.
+                    !UNCOMMENT THE FOLLOWING 5 LINES IF USING IBM!
+!                    IF ( grid%ht_s(i,   k, j  ) .LE. grid%ibm_ht_w(i,   j  ) ) below_IB = .TRUE.
+!                    IF ( grid%ht_u(i,   k, j  ) .LE. grid%ibm_ht_u(i,   j  ) ) below_IB = .TRUE.
+!                    IF ( grid%ht_u(i+1, k, j  ) .LE. grid%ibm_ht_u(i+1, j  ) ) below_IB = .TRUE.
+!                    IF ( grid%ht_v(i,   k, j  ) .LE. grid%ibm_ht_v(i,   j  ) ) below_IB = .TRUE.
+!                    IF ( grid%ht_v(i,   k, j+1) .LE. grid%ibm_ht_v(i,   j+1) ) below_IB = .TRUE.
+                    IF ( ( (k .GE. kme) .OR. (k .LT. kms) ) .OR. &
+                         ( (j .GE. jme) .OR. (j .LT. jms) ) .OR. &
+                         ( (i .GE. ime) .OR. (i .LT. ims) ) .OR. &
+                         below_IB ) THEN
+                        !If we're out of bounds or below the IB then output a
+                        !value that we can identify when processing this in post.
+                        u = -99.9999
+                        v = -99.9999
+                        w = -99.9999
+                    ELSE
+                        !Unstagger the velocities to cell centers
+                        u = ( grid%u_2( i,   k,   j   ) + &
+                              grid%u_2( i+1, k,   j   ) ) / 2.0
+                        v = ( grid%v_2( i,   k,   j   ) + &
+                              grid%v_2( i,   k,   j+1 ) ) / 2.0
+                        w = ( grid%w_2( i,   k,   j   ) + &
+                              grid%w_2( i,   k+1, j   ) ) / 2.0
+                        t =   grid%t_2( i,   k,   j   )
+                    ENDIF
+                    write(2000+sta, '(3(A,F8.4))', ADVANCE='NO') "   ",u,"   ",v,"   ",w,"   ",t ! ASW may need to modify write statement here. Should 3 be 4?
+                ENDDO
+                ENDDO
+                ENDDO
+                write(2000+sta, '(A)') "" !This simply adds a newline
+            ENDIF
+        ENDIF
+    ENDDO
+
+    RETURN
+END SUBROUTINE station_hist_out
+
 SUBROUTINE med_before_solve_io ( grid , config_flags )
   ! Driver layer
    USE module_state_description

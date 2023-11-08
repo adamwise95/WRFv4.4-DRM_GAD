@@ -134,6 +134,10 @@
 
    REAL :: dt_s, dx_km
 
+   !DJW added for writing values at specified gridpoints at each timestep
+   CHARACTER(LEN=132) :: fname
+   INTEGER            :: sta
+
    REAL :: max_mf, max_rot_angle
    CALL get_ijk_from_grid ( grid ,                              &
                            ids, ide, jds, jde, kds, kde,        &
@@ -2231,6 +2235,21 @@ if( grid%traj_opt /= no_trajectory ) then
      CALL wrf_debug ( 100 , 'start_domain_em: After call to trajectory_init' )
 endif
 #endif
+
+    !DJW this opens a text file for each grid point that will have data saved
+     !from each timestep. 
+     ! ASW modification in here if you need more stations
+    DO sta=1,max_stations
+        IF (grid%id .EQ. model_config_rec%station_id(sta)) THEN
+            IF ( (model_config_rec%station_i(sta) .GE. its) .AND. (model_config_rec%station_i(sta) .LE. MIN(ite, ide-1)) .AND. &
+                 (model_config_rec%station_k(sta) .GE. kts) .AND. (model_config_rec%station_k(sta) .LE. MIN(kte, kde-1)) .AND. &
+                 (model_config_rec%station_j(sta) .GE. jts) .AND. (model_config_rec%station_j(sta) .LE. MIN(jte, jde-1)) ) THEN
+                write(fname, '(A,I3.3,A)') "station",sta,".dat"
+                write(*, '(A,A,A,I4)') "DJW[start_domain_em]: opening ",TRIM(fname)," using UNIT=",2000+sta
+                OPEN(2000+sta, FILE=fname, STATUS='UNKNOWN', ACTION='WRITE', POSITION='APPEND')
+            ENDIF
+        ENDIF
+    ENDDO
 
 
      CALL wrf_debug ( 100 , 'start_domain_em: Returning' )

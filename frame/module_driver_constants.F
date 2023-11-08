@@ -50,6 +50,10 @@ MODULE module_driver_constants
 
    INTEGER , PARAMETER :: max_eta         =   10001
 
+   !  The maximum number of grid points that can be specified for output via
+   !  station***.dat files as coded by DJW
+   INTEGER , PARAMETER :: max_stations    = 51
+
    !  The maximum number of ocean levels in the 3d U Miami ocean.
 
    INTEGER , PARAMETER :: max_ocean       =   501

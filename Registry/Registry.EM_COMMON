@@ -2353,6 +2353,13 @@ rconfig   integer   max_ts_level    namelist,domains    1              15       
 # track input
 rconfig   integer   track_loc_in    namelist,domains    1               0       -    "Number of track locations input"   ""    ""
 
+# DJW added to enable text output at specific gridpoints each timestep
+rconfig   integer      station_box    namelist,domains    max_domains          1    irh   "station_box"   "points per side of cube to write output from"   ""
+rconfig   integer      station_i      namelist,domains    max_stations        -1.
+rconfig   integer      station_j      namelist,domains    max_stations        -1.
+rconfig   integer      station_k      namelist,domains    max_stations        -1.
+rconfig   integer      station_id     namelist,domains    max_stations        -1.
+
 # number of external model domains for coupling
 rconfig   integer   num_ext_model_couple_dom    namelist,domains   1     1      -    "number of external models domains for coupling, used for the coupling mask"   ""    ""
 
