@@ -1543,7 +1543,7 @@ SUBROUTINE rsfs_filter( varfilt, var, vars, variable, ifilt, &
 
   REAL :: a, b, c, du
 
-  INTEGER:: i, j, k, ibgn, iend, jbgn, jend, kbgn, kend
+  INTEGER:: i, j, k, ibgn, iend, jbgn, jend, kbgn, kend, filter2Donly ! ASW hard code 2d vs 3d filter
 
 !-----------------------------------------------------------------------
 
@@ -2012,28 +2012,43 @@ SUBROUTINE rsfs_filter( varfilt, var, vars, variable, ifilt, &
   ENDDO
   ENDDO
 
+filter2Donly = 1 ! ASW : change to 0 for 3D filter
+if (filter2Donly .eq. 1) then ! ASW: if only 2d filter
+
 ! Filter in y-direction
   DO j = jts, jte
   DO k = kbgn, kend
   DO i = its, ite
-!     if (max(abs(fx(i,k,j+1)), abs(fx(i,k,j)), abs(fx(i,k,j-1)))<1.0e-32) then
-!       varfilt(i,k,j) = fx(i,k,j)
-! !      fxy(i,k,j) = a*fx(i,k,j+1) + b*fx(i,k,j) + c*fx(i,k,j-1)
-!     else
       varfilt(i,k,j) = a*fx(i,k,j+1) + b*fx(i,k,j) + c*fx(i,k,j-1)
-    ! end if
   END DO
   END DO
   ENDDO
 
-! ! Filter in z-direction
-!   DO j = jts, jte
-!   DO k = kbgn+1, kend-1
-!   DO i = its, ite
-!     varfilt(i,k,j) = a*fxy(i,k+1,j) + b*fxy(i,k,j) + c*fxy(i,k-1,j)
-!   ENDDO
-!   ENDDO
-!   ENDDO
+else ! ASW: 3d filter on
+
+! Filter in y-direction
+  DO j = jts, jte
+  DO k = kbgn, kend
+  DO i = its, ite
+   if (max(abs(fx(i,k,j+1)), abs(fx(i,k,j)), abs(fx(i,k,j-1)))<1.0e-32) then ! ASW: numerical stability check from Xiaoming?
+       fxy(i,k,j) = fx(i,k,j+1) 
+   else
+       fxy(i,k,j) = a*fx(i,k,j+1) + b*fx(i,k,j) + c*fx(i,k,j-1)
+   end if
+  END DO
+  END DO
+  ENDDO
+
+! Filter in z-direction
+  DO j = jts, jte
+  DO k = kbgn+1, kend-1
+  DO i = its, ite
+     varfilt(i,k,j) = a*fxy(i,k+1,j) + b*fxy(i,k,j) + c*fxy(i,k-1,j)
+  ENDDO
+  ENDDO
+  ENDDO
+
+end if !ASW
 
   RETURN
 
