@@ -1041,7 +1041,7 @@ ENDIF
                   ( l33(i,k,j) - tem )*( st33(i,k,j) - temx ) +  &
                   2.0*( l12(i,k,j)*st12(i,k,j) +                  &
                   l13(i,k,j)*st13(i,k,j) + l23(i,k,j)*st23(i,k,j) )
-    drmn(i,k,j) = drmn(i,k,j) * min(1.0,( (max( 0.0, 1.0 - BN2(i,k,j) / (def2(i,k,j)+eps) / pr ))**0.5 ))
+!    drmn(i,k,j) = drmn(i,k,j) * min(1.0,( (max( 0.0, 1.0 - BN2(i,k,j) / (def2(i,k,j)+eps) / pr ))**0.5 )) ASW stability correction added here by XS but commented to prevent potential double counting
 
 
     ! denominator = Mij*Mij
@@ -1157,7 +1157,6 @@ SUBROUTINE drmevc( xkmv, xkhv, xkmh, xkhh,       &
 !    xkmv(i,k,j)=MAX( xkmv(i,k,j), 0.0)
     xkmh(i,k,j)=xkmv(i,k,j)
 
-! ASW commented because my xkhh seems low!
 	richardson = bn2(i,k,j) / max(drmd(i,k,j)/ddiff, eps)
 	IF (dwl_pr_opt .eq. 1) THEN !ASW
 		if (richardson .lt. 0.0) richardson = 0.0
@@ -1167,7 +1166,7 @@ SUBROUTINE drmevc( xkmv, xkhv, xkmh, xkhh,       &
     xkhv(i,k,j)=xkmv(i,k,j)/pr
     xkhh(i,k,j)=xkhv(i,k,j)
     
-	! Stability correction; XS
+	! Stability correction; XS; ASW: Shi et al. 2019; Ric = 1/3
 	IF (dwl_stab_opt .eq. 1) THEN !ASW
      if (richardson .ge. 0.333333) then ! ASW
         c_b = 0.0
