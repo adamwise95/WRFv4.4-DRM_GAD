@@ -311,16 +311,17 @@ rconfig	integer sfs_opt 	namelist,dynamics       max_domains     0       -	"1 or
 rconfig	integer m_opt    	namelist,dynamics       max_domains     0       -       "1 to output sgs stresses if not using NBA"
 
 #----------------------------- RSFS and DWL options ----------------------------------#
-rconfig	integer dwl_opt    	    namelist,dynamics  	max_domains    -1       -       "1: regular DRM, 2: DWL but buggy"
-rconfig	integer rsfsvsbc_opt    namelist,dynamics  	max_domains     1       -       " "
-rconfig	integer rsfs_opt      	namelist,dynamics  	max_domains    -1       -       "level of reconstruction for RSFS stress"
-rconfig	integer can_opt    	    namelist,dynamics 	max_domains     0       -       "to use separate near-wall canopy stress model"
-rconfig real    canfact     namelist,dynamics       max_domains     0.0       -     "near-wall canopy stress model amplitude factor"
-rconfig integer mp_physics_rsfs derived             max_domains    -1       -       "mp_physics_rsfs"
-rconfig integer rsfsT_opt       namelist,dynamics   max_domains     1       -       "DWL the easy way, don't add rsfsT in module diffusions"
-rconfig integer rsfsU_opt       namelist,dynamics   max_domains     1       -       "DWL the easy way, don't add rsfsU in module diffusions"
-rconfig integer dwl_pr_opt      namelist,dynamics   max_domains     0       -       "DWL fancy pr option"
-rconfig integer dwl_stab_opt    namelist,dynamics   max_domains     0       -       "DWL stability correction option"
+rconfig	integer dwl_opt    	    	namelist,dynamics  	max_domains    -1       -       "1: regular DRM, 2: DWL but buggy"
+rconfig	integer rsfsvsbc_opt    	namelist,dynamics  	max_domains     1       -       " "
+rconfig	integer rsfs_opt      		namelist,dynamics  	max_domains    -1       -       "level of reconstruction for RSFS stress"
+rconfig	integer can_opt    	    	namelist,dynamics 	max_domains     0       -       "to use separate near-wall canopy stress model"
+rconfig real    canfact     		namelist,dynamics       max_domains     0.0       -     "near-wall canopy stress model amplitude factor"
+rconfig integer mp_physics_rsfs 	derived             max_domains    -1       -       "mp_physics_rsfs"
+rconfig integer rsfsT_opt       	namelist,dynamics   max_domains     1       -       "DWL the easy way, don't add rsfsT in module diffusions"
+rconfig integer rsfsU_opt       	namelist,dynamics   max_domains     1       -       "DWL the easy way, don't add rsfsU in module diffusions"
+rconfig integer dwlsurfsmooth_opt   namelist,dynamics   max_domains     0       -       "DWL surface smoothing for numerical stability (from XS and YW)"
+rconfig integer dwl_pr_opt      	namelist,dynamics   max_domains     0       -       "DWL fancy pr option"
+rconfig integer dwl_stab_opt    	namelist,dynamics   max_domains     0       -       "DWL stability correction option"
 #-------------------------------------------------------------------------------
 
 package	nosfs	sfs_opt==0      -       -

@@ -3341,6 +3341,10 @@ SUBROUTINE horizontal_diffusion_u_2( tendency, config_flags,              &
                             ids, ide, jds, jde, kds, kde,    &
                             ims, ime, jms, jme, kms, kme,    &
                             its, ite, jts, jte, kts, kte     )
+   
+   !ASW
+   if config_flags%dwlsurfsmooth_opt .eq. 1 then
+
    ! YW and XS                                                          
    do j = j_start-1, j_end+1                                            
       do k = kts, ktf                                                   
@@ -3375,6 +3379,7 @@ SUBROUTINE horizontal_diffusion_u_2( tendency, config_flags,              &
       end do                                                            
    end do                                                               
                                                                         
+   end if ! ASW                                                    
 
 ! titau2 = titau12
    is_ext=0
@@ -3389,6 +3394,9 @@ SUBROUTINE horizontal_diffusion_u_2( tendency, config_flags,              &
                          ids, ide, jds, jde, kds, kde,    &
                          ims, ime, jms, jme, kms, kme,    &
                          its, ite, jts, jte, kts, kte     )
+
+   !ASW
+   if config_flags%dwlsurfsmooth_opt .eq. 1 then
 
    ! YW and XS                                                       
    do j = j_start-1, j_end+1                                         
@@ -3422,7 +3430,9 @@ SUBROUTINE horizontal_diffusion_u_2( tendency, config_flags,              &
                                                                      
           end do                                                     
       end do                                                         
-    end do                                                           
+    end do       
+
+    end if ! ASW                                                    
                                                                      
                                                                    
 ! titau1avg = titau11avg
@@ -3623,6 +3633,9 @@ SUBROUTINE horizontal_diffusion_v_2( tendency, config_flags,              &
                          ims, ime, jms, jme, kms, kme,   &
                          its, ite, jts, jte, kts, kte    )
                                                                       
+   !ASW
+   if config_flags%dwlsurfsmooth_opt .eq. 1 then
+
    ! YW and XS                                                        
   do j = j_start-1, j_end+1                                           
     do k = kts, ktf                                                   
@@ -3655,7 +3668,9 @@ SUBROUTINE horizontal_diffusion_v_2( tendency, config_flags,              &
                                                                       
         end do                                                        
     end do                                                            
-  end do                                                              
+  end do    
+
+  end if !ASW                                                          
                                                                       
                                                                       
 ! titau2 = titau22
@@ -3672,7 +3687,9 @@ SUBROUTINE horizontal_diffusion_v_2( tendency, config_flags,              &
                             ims, ime, jms, jme, kms, kme,   &
                             its, ite, jts, jte, kts, kte    )
 
-                                                                     
+   !ASW
+   if config_flags%dwlsurfsmooth_opt .eq. 1 then
+
    ! YW and XS                                                       
    do j = j_start-1, j_end+1                                         
       do k = kts, ktf                                                
@@ -3704,7 +3721,9 @@ SUBROUTINE horizontal_diffusion_v_2( tendency, config_flags,              &
                                                                      
             end do                                                   
         end do                                                       
-     end do                                                          
+     end do  
+
+     end if !ASW                                                        
                                                                      
 
    DO j = j_start, j_end
@@ -3905,7 +3924,8 @@ SUBROUTINE horizontal_diffusion_w_2( tendency, config_flags,              &
                          ims, ime, jms, jme, kms, kme,    &
                          its, ite, jts, jte, kts, kte     )
 
-                                                                    
+   !ASW
+   if config_flags%dwlsurfsmooth_opt .eq. 1 then
                                                                     
    ! YW and XS                                                      
    do j = j_start-1, j_end+1                                        
@@ -3939,7 +3959,9 @@ SUBROUTINE horizontal_diffusion_w_2( tendency, config_flags,              &
                                                                     
           end do                                                    
       end do                                                        
-    end do                                                          
+    end do
+
+    end if !ASW                                                          
                                                                     
 
 ! titau2 = titau32
@@ -3957,7 +3979,9 @@ SUBROUTINE horizontal_diffusion_w_2( tendency, config_flags,              &
                          ims, ime, jms, jme, kms, kme,    &
                          its, ite, jts, jte, kts, kte     )
 
-                                                                       
+   !ASW
+   if config_flags%dwlsurfsmooth_opt .eq. 1 then
+
     ! YW and XS                                                        
     do j = j_start-1, j_end+1                                          
        do k = kts+1, ktf                                               
@@ -3990,7 +4014,9 @@ SUBROUTINE horizontal_diffusion_w_2( tendency, config_flags,              &
                                                                        
            end do                                                      
        end do                                                          
-     end do                                                            
+     end do       
+
+     end if !ASW                                                     
                                                                        
                                                                        
 ! titau1avg = titau31avg * zx * zeta_z = titau13avg * zx * zeta_z
@@ -4550,6 +4576,9 @@ ENDDO
 ENDDO
 ENDDO
 
+!ASW
+if config_flags%dwlsurfsmooth_opt .eq. 1 then
+
 ! YW and XS
 do j = j_start-1, j_end+1
   do k = kts, ktf
@@ -4583,6 +4612,8 @@ do j = j_start-1, j_end+1
      end do
   end do
 end do
+
+end if !ASW
 
 
 ENDIF
@@ -4659,6 +4690,9 @@ ENDDO
 ENDDO
 ENDDO
 
+!ASW
+if config_flags%dwlsurfsmooth_opt .eq. 1 then
+
 ! YW and XS
 do j = j_start-1, j_end+1
   do k = kts, ktf
@@ -4692,6 +4726,8 @@ do j = j_start-1, j_end+1
      end do
   end do
 end do
+
+end if !ASW
 
 ENDIF
 
