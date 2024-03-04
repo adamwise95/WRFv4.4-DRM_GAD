@@ -2800,7 +2800,7 @@ IF ( n_moist .ge. PARAM_FIRST_SCALAR ) THEN
                DO i = ims, ime
                   DO k = kms, kme
                      DO j = jms, jme
-                        rsfs_filt(i,k,j,P_temp)=qvapor(i,j,k)
+                        rsfs_filt(i,k,j,P_temp)=qvapor(i,k,j)
                      ENDDO
                   ENDDO
                ENDDO
@@ -3564,7 +3564,7 @@ IF ( n_scalar .ge. PARAM_FIRST_SCALAR ) THEN
                DO i = ims, ime
                   DO k = kms, kme
                      DO j = jms, jme
-                        rsfs_filt(i,k,j,P_temp)=qvapor(i,j,k)
+                        rsfs_filt(i,k,j,P_temp)=qvapor(i,k,j)
                      ENDDO
                   ENDDO
                ENDDO

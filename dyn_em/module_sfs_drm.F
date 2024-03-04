@@ -1158,7 +1158,7 @@ SUBROUTINE drmevc( xkmv, xkhv, xkmh, xkhh,       &
     xkmh(i,k,j)=xkmv(i,k,j)
 
 ! ASW commented because my xkhh seems low!
-	richardson = bn2(i,k,j) / max(drmd(i,j,k)/ddiff, eps)
+	richardson = bn2(i,k,j) / max(drmd(i,k,j)/ddiff, eps)
 	IF (dwl_pr_opt .eq. 1) THEN !ASW
 		if (richardson .lt. 0.0) richardson = 0.0
 		pr = 0.7 * exp(-richardson / (0.7*0.333333)) + richardson / 0.25
