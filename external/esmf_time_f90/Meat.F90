@@ -973,43 +973,6 @@ SUBROUTINE fraction_to_string( numerator, denominator, frac_str )
   CALL fraction_to_stringi8( numerator_i8, denominator_i8, frac_str )
 END SUBROUTINE fraction_to_string
 
-! DJW: included to enable fractions w/ format I4.4/I4.4.
-SUBROUTINE fraction_to_long_stringi8( numerator, denominator, frac_str )
-  USE WRF_ESMF_basemod
-  IMPLICIT NONE
-  INTEGER(ESMF_KIND_I8), INTENT(IN) :: numerator
-  INTEGER(ESMF_KIND_I8), INTENT(IN) :: denominator
-  CHARACTER (LEN=*), INTENT(OUT) :: frac_str
-  IF ( denominator > 0 ) THEN
-    IF ( mod( numerator, denominator ) /= 0 ) THEN
-      IF ( numerator > 0 ) THEN
-        WRITE(frac_str,FMT="('+',I4.4,'/',I4.4)") abs(numerator), denominator
-      ELSE   ! numerator < 0
-        WRITE(frac_str,FMT="('-',I4.4,'/',I4.4)") abs(numerator), denominator
-      ENDIF
-    ELSE   ! includes numerator == 0 case
-      frac_str = ''
-    ENDIF
-  ELSE   ! no-fraction case
-    frac_str = ''
-  ENDIF
-END SUBROUTINE fraction_to_long_stringi8
-
-
-SUBROUTINE fraction_to_long_string( numerator, denominator, frac_str )
-  USE WRF_ESMF_basemod
-  IMPLICIT NONE
-  INTEGER, INTENT(IN) :: numerator
-  INTEGER, INTENT(IN) :: denominator
-  CHARACTER (LEN=*), INTENT(OUT) :: frac_str
-  ! locals
-  INTEGER(ESMF_KIND_I8) :: numerator_i8, denominator_i8
-  numerator_i8 = INT( numerator, ESMF_KIND_I8 )
-  denominator_i8 = INT( denominator, ESMF_KIND_I8 )
-  CALL fraction_to_long_stringi8( numerator_i8, denominator_i8, frac_str )
-END SUBROUTINE fraction_to_long_string
-! DJW: end of additions.
-
 
 SUBROUTINE print_a_time( time )
    use WRF_ESMF_BaseMod

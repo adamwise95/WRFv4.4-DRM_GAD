@@ -2239,19 +2239,6 @@ CONTAINS
           CALL fraction_to_string( Sn, Sd, frac_str )
           current_timestr_frac = TRIM(tmp_str)//TRIM(frac_str)
         ENDIF
-        !DJW addition  
-        IF ( PRESENT( current_timestr_frac_long ) ) THEN
-          lcl_currtime = domain_get_current_time ( grid )
-          CALL wrf_timetoa ( lcl_currtime, tmp_str )
-          CALL WRFU_TimeGet( lcl_currtime, Sn=Sn, Sd=Sd, rc=rc )
-          IF ( rc /= WRFU_SUCCESS ) THEN
-            CALL wrf_error_fatal ( &
-             'domain_clock_get:  WRFU_TimeGet() failed' )
-          ENDIF
-          CALL fraction_to_long_string( Sn, Sd, frac_str )
-          current_timestr_frac_long = TRIM(tmp_str)//TRIM(frac_str)
-        ENDIF
-        !DJW end of addition
         IF ( PRESENT( stop_time ) ) THEN
           stop_time = domain_get_stop_time ( grid )
         ENDIF
