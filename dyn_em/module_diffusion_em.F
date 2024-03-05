@@ -3343,7 +3343,7 @@ SUBROUTINE horizontal_diffusion_u_2( tendency, config_flags,              &
                             its, ite, jts, jte, kts, kte     )
    
    !ASW
-   if config_flags%dwlsurfsmooth_opt .eq. 1 then
+   if (config_flags%dwlsurfsmooth_opt .eq. 1) then
 
    ! YW and XS                                                          
    do j = j_start-1, j_end+1                                            
@@ -3396,7 +3396,7 @@ SUBROUTINE horizontal_diffusion_u_2( tendency, config_flags,              &
                          its, ite, jts, jte, kts, kte     )
 
    !ASW
-   if config_flags%dwlsurfsmooth_opt .eq. 1 then
+   if (config_flags%dwlsurfsmooth_opt .eq. 1) then
 
    ! YW and XS                                                       
    do j = j_start-1, j_end+1                                         
@@ -3634,7 +3634,7 @@ SUBROUTINE horizontal_diffusion_v_2( tendency, config_flags,              &
                          its, ite, jts, jte, kts, kte    )
                                                                       
    !ASW
-   if config_flags%dwlsurfsmooth_opt .eq. 1 then
+   if (config_flags%dwlsurfsmooth_opt .eq. 1) then
 
    ! YW and XS                                                        
   do j = j_start-1, j_end+1                                           
@@ -3688,7 +3688,7 @@ SUBROUTINE horizontal_diffusion_v_2( tendency, config_flags,              &
                             its, ite, jts, jte, kts, kte    )
 
    !ASW
-   if config_flags%dwlsurfsmooth_opt .eq. 1 then
+   if (config_flags%dwlsurfsmooth_opt .eq. 1) then
 
    ! YW and XS                                                       
    do j = j_start-1, j_end+1                                         
@@ -3925,7 +3925,7 @@ SUBROUTINE horizontal_diffusion_w_2( tendency, config_flags,              &
                          its, ite, jts, jte, kts, kte     )
 
    !ASW
-   if config_flags%dwlsurfsmooth_opt .eq. 1 then
+   if (config_flags%dwlsurfsmooth_opt .eq. 1) then
                                                                     
    ! YW and XS                                                      
    do j = j_start-1, j_end+1                                        
@@ -3980,7 +3980,7 @@ SUBROUTINE horizontal_diffusion_w_2( tendency, config_flags,              &
                          its, ite, jts, jte, kts, kte     )
 
    !ASW
-   if config_flags%dwlsurfsmooth_opt .eq. 1 then
+   if (config_flags%dwlsurfsmooth_opt .eq. 1) then
 
     ! YW and XS                                                        
     do j = j_start-1, j_end+1                                          
@@ -4577,7 +4577,7 @@ ENDDO
 ENDDO
 
 !ASW
-if config_flags%dwlsurfsmooth_opt .eq. 1 then
+if (config_flags%dwlsurfsmooth_opt .eq. 1) then
 
 ! YW and XS
 do j = j_start-1, j_end+1
@@ -4691,7 +4691,7 @@ ENDDO
 ENDDO
 
 !ASW
-if config_flags%dwlsurfsmooth_opt .eq. 1 then
+if (config_flags%dwlsurfsmooth_opt .eq. 1) then
 
 ! YW and XS
 do j = j_start-1, j_end+1
