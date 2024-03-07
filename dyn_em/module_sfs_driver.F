@@ -7905,6 +7905,19 @@ ENDIF ! config_flags%dwl_opt .EQ. 1
 ! Compute DWL eddy viscosity coefficient
 !_______________________________________________________________________
 
+!!! ASW: potential halos bug?
+!_______________________________________________________________________
+!
+! Update halos and Compute DWL eddy viscosity coefficient
+!_______________________________________________________________________
+
+#ifdef DM_PARALLEL
+#      include "HALO_EM_EVC_DRM.inc"
+#      include "PERIOD_EM_EVC_DRM.inc"
+#endif
+!!! ASW
+
+
      !$OMP PARALLEL DO   &
      !$OMP PRIVATE ( ij )
      DO ij = 1 , grid%num_tiles !------------------------------
