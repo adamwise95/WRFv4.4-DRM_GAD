@@ -3034,7 +3034,7 @@ SUBROUTINE horizontal_diffusion_2 ( rt_tendf, ru_tendf, rv_tendf, rw_tendf,    &
                                    its, ite, jts, jte, kts, kte           )
 
 	! ASW
-	if (config_flags%rsfs_opt.lt.0 .and. config_flags%rsfs_opt.ge.6) THEN   ! no RSFS 
+	if (config_flags%rsfs_opt.lt.0 .or. config_flags%rsfs_opt.ge.6) THEN   ! no RSFS 
 	
      CALL horizontal_diffusion_s  ( rt_tendf, config_flags,                 &
 									thp,                                    &
@@ -3083,7 +3083,7 @@ SUBROUTINE horizontal_diffusion_2 ( rt_tendf, ru_tendf, rv_tendf, rw_tendf,    &
       moist_loop: do im = PARAM_FIRST_SCALAR, n_moist
 
      ! ASW
-     if (config_flags%rsfs_opt.lt.0 .and. config_flags%rsfs_opt.ge.6) THEN   ! no RSFS
+     if (config_flags%rsfs_opt.lt.0 .or. config_flags%rsfs_opt.ge.6) THEN   ! no RSFS
 
            CALL horizontal_diffusion_s( moist_tendf(ims,kms,jms,im),       &
                                         config_flags,                      &
@@ -3163,7 +3163,7 @@ SUBROUTINE horizontal_diffusion_2 ( rt_tendf, ru_tendf, rv_tendf, rw_tendf,    &
       scalar_loop: do is = PARAM_FIRST_SCALAR, n_scalar
 
 	! ASW
-    if (config_flags%rsfs_opt.lt.0 .and. config_flags%rsfs_opt.ge.6) THEN   ! no RSFS 
+    if (config_flags%rsfs_opt.lt.0 .or. config_flags%rsfs_opt.ge.6) THEN   ! no RSFS 
 
          CALL horizontal_diffusion_s( scalar_tendf(ims,kms,jms,is),     &
                                       config_flags,                     &
@@ -5350,7 +5350,7 @@ SUBROUTINE vertical_diffusion_2   ( ru_tendf, rv_tendf, rw_tendf, rt_tendf,   &
 
      scalar_loop: do im = PARAM_FIRST_SCALAR, n_scalar
 
-     if (config_flags%rsfs_opt.lt.0 .and. config_flags%rsfs_opt.ge.6) then   ! no RSFS         
+     if (config_flags%rsfs_opt.lt.0 .or. config_flags%rsfs_opt.ge.6) then   ! no RSFS         
           CALL vertical_diffusion_s(scalar_tendf(ims,kms,jms,im),         &                    
                                     config_flags, scalar(ims,kms,jms,im), &                    
                                     xkhv,                                 &                    
