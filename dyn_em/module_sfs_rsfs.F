@@ -37,6 +37,16 @@
 !
 ! Implemented 08/2008 by Jeff Mirocha, jmirocha@llnl.gov
 !
+! 01/22: modified by Xiaoming Shi (https://github.com/shixm-cloud/WRF-RNA)
+!        - ASW summarizing XS modifications
+!        - commented 3D filter for numerical stability
+!
+! 03/24: modified by Adam Wise (adamwise@berkeley.edu)
+!        - added flag in rsfs_filter subroutine for whether to use 2D or 3D filter
+!        - RSFS can get pretty crazy when using 3D filter and can result in fails
+!            - Jason tried implementing a damping function but not filtering in z
+!              seems to be the best method
+!
 !=============================================================================
 
 MODULE module_sfs_rsfs

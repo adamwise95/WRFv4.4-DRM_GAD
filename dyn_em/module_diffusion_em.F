@@ -1,5 +1,29 @@
-
 ! WRF:MODEL_LAYER:PHYSICS
+
+!=============================================================================
+!
+! Modification History:
+!
+! Implemented 08/2008 by Jeff Mirocha, jmirocha@llnl.gov
+!
+! 01/22: modified by Xiaoming Shi (https://github.com/shixm-cloud/WRF-RNA)
+!        - ASW summarizing XS modifications
+!        - zeroed and smoothed SFS component in diffusion subroutines for
+!          numerical stability (look for "YW and XS")
+!           - they needed this for a real typhoon case
+!           - ASW found this to be unnecessary for regular PBL cases
+!           - ASW: this weirdly does not affect the results a lot
+!
+! 03/24: modified by Adam Wise (adamwise@berkeley.edu)
+!        - added logic for SFS smoothing by YW and XS
+!        - added heat flux outputs from Jeff
+!        - added MOST surface forcing option from Jeff
+!           - modified his implementation to take surface cooling as a namelist input
+!           - to do this, tke_heat_flux should be set as a negative*1000 of the 
+!             cooling rate you want in K/hr. For example, -200 in the namelist
+!             is a surface cooling rate of -0.2 K/hr
+!
+!=============================================================================
 
     MODULE module_diffusion_em
 
@@ -3034,7 +3058,7 @@ SUBROUTINE horizontal_diffusion_2 ( rt_tendf, ru_tendf, rv_tendf, rw_tendf,    &
                                    its, ite, jts, jte, kts, kte           )
 
 	! ASW
-	if (config_flags%rsfs_opt.lt.0 .or. config_flags%rsfs_opt.ge.6) THEN   ! no RSFS 
+	if (config_flags%rsfs_opt.lt.0 .or. config_flags%rsfs_opt.ge.6) THEN   ! no RSFS ASW 
 	
      CALL horizontal_diffusion_s  ( rt_tendf, config_flags,                 &
 									thp,                                    &
@@ -3083,7 +3107,7 @@ SUBROUTINE horizontal_diffusion_2 ( rt_tendf, ru_tendf, rv_tendf, rw_tendf,    &
       moist_loop: do im = PARAM_FIRST_SCALAR, n_moist
 
      ! ASW
-     if (config_flags%rsfs_opt.lt.0 .or. config_flags%rsfs_opt.ge.6) THEN   ! no RSFS
+     if (config_flags%rsfs_opt.lt.0 .or. config_flags%rsfs_opt.ge.6) THEN   ! no RSFS ASW
 
            CALL horizontal_diffusion_s( moist_tendf(ims,kms,jms,im),       &
                                         config_flags,                      &
@@ -3163,7 +3187,7 @@ SUBROUTINE horizontal_diffusion_2 ( rt_tendf, ru_tendf, rv_tendf, rw_tendf,    &
       scalar_loop: do is = PARAM_FIRST_SCALAR, n_scalar
 
 	! ASW
-    if (config_flags%rsfs_opt.lt.0 .or. config_flags%rsfs_opt.ge.6) THEN   ! no RSFS 
+    if (config_flags%rsfs_opt.lt.0 .or. config_flags%rsfs_opt.ge.6) THEN   ! no RSFS ASW 
 
          CALL horizontal_diffusion_s( scalar_tendf(ims,kms,jms,is),     &
                                       config_flags,                     &
@@ -5089,7 +5113,7 @@ SUBROUTINE vertical_diffusion_2   ( ru_tendf, rv_tendf, rw_tendf, rt_tendf,   &
 
    END IF
  
-   if ( config_flags%rsfs_opt .ge. 6 .or. config_flags%rsfs_opt .lt. 0) THEN ! no RSFS  
+   if ( config_flags%rsfs_opt .ge. 6 .or. config_flags%rsfs_opt .lt. 0) THEN ! no RSFS ASW  
       CALL vertical_diffusion_s( rt_tendf, config_flags, var_mix, xkhv, &         
                                   dn, dnw, rdz, rdzw, fnm, fnp, rho,     &        
                                   .false.,                               &        
@@ -5259,7 +5283,7 @@ SUBROUTINE vertical_diffusion_2   ( ru_tendf, rv_tendf, rw_tendf, rt_tendf,   &
 
        END IF
 
-	   if ( config_flags%rsfs_opt .ge. 6 .or. config_flags%rsfs_opt .lt. 0) THEN ! no RSFS  
+	   if ( config_flags%rsfs_opt .ge. 6 .or. config_flags%rsfs_opt .lt. 0) THEN ! no RSFS ASW  
           CALL vertical_diffusion_s(moist_tendf(ims,kms,jms,im),         &                      
                                     config_flags, var_mix,               &                      
                                     xkhv,                                &                      
@@ -5350,7 +5374,7 @@ SUBROUTINE vertical_diffusion_2   ( ru_tendf, rv_tendf, rw_tendf, rt_tendf,   &
 
      scalar_loop: do im = PARAM_FIRST_SCALAR, n_scalar
 
-     if (config_flags%rsfs_opt.lt.0 .or. config_flags%rsfs_opt.ge.6) then   ! no RSFS         
+     if (config_flags%rsfs_opt.lt.0 .or. config_flags%rsfs_opt.ge.6) then   ! no RSFS ASW         
           CALL vertical_diffusion_s(scalar_tendf(ims,kms,jms,im),         &                    
                                     config_flags, scalar(ims,kms,jms,im), &                    
                                     xkhv,                                 &                    

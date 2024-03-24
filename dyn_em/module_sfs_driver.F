@@ -37,6 +37,13 @@
 !
 ! Implemented 12/2009 by Jeff Mirocha, jmirocha@llnl.gov
 !
+! 01/22: modified by Xiaoming Shi (https://github.com/shixm-cloud/WRF-RNA)
+!        - ASW summarizing XS modifications
+!        - added code for DRM to work with moisture and microphysics
+!
+! 03/24: modified by Adam Wise (adamwise@berkeley.edu)
+!        - added logic to decouple DWL and DRM (DWL-SGS + RSFS)
+!
 !=============================================================================
 
 MODULE module_sfs_driver

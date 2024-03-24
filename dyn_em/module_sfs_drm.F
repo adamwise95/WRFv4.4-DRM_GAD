@@ -1,4 +1,24 @@
-
+!=============================================================================
+!
+! Modification History:
+!
+! Implemented 08/2008 by Jeff Mirocha, jmirocha@llnl.gov
+!
+! 01/22: modified by Xiaoming Shi (https://github.com/shixm-cloud/WRF-RNA)
+!        - ASW summarizing XS modifications
+!        - hard-coded stability modification for mixing coefficients (Shi et al. 2019)
+!        - modified drmnd subroutine (check github if interested)
+!           - ASW: reverted these changes back to Jeff's implementation
+!
+! 03/24: modified by Adam Wise (adamwise@berkeley.edu)
+!        - added prandtl number parameterization option
+!        - drmnd back to Jeff's implementation
+!        - brought back in canopy model (XS commented for numerical stability)
+!           - canopy is modified from Jeff's implementation to original ARPS code
+!           - canfact is now an input, should be set based on aspect ratio (Chow 2004)
+!           - some code brought in from Jason, documentation could be better...
+!
+!=============================================================================
 
 MODULE module_sfs_drm
 
@@ -989,7 +1009,6 @@ IF (dwl_opt .GE. 1) THEN
     l13(i,k,j) = tfuw(i,k,j) - tfu(i,k,j)*tfw(i,k,j) - h13(i,k,j)
     l23(i,k,j) = tfvw(i,k,j) - tfv(i,k,j)*tfw(i,k,j) - h23(i,k,j)
 
-    ! XS commented
     st11(i,k,j) = ddiff*tfs11(i,k,j)
     st22(i,k,j) = ddiff*tfs22(i,k,j)
     st33(i,k,j) = ddiff*tfs33(i,k,j)
@@ -1001,7 +1020,7 @@ IF (dwl_opt .GE. 1) THEN
   ENDDO
   ENDDO
 
-ELSE IF (dwl_opt .eq. 0) then !ASW bug currently means this can't get entered
+ELSE IF (dwl_opt .eq. 0) then !ASW bug currently means this can't get entered. Bad option anyways since we want H's. I think this was actually originally implemented by Jeff for numerical stability reasons
 
   DO j = jts, jte
   DO k = kbgn, kend
@@ -1024,24 +1043,19 @@ ENDIF
   DO k = kbgn, kend
   DO i = its, ite
 
-! XS commented code below
-!    ! tem = 1/3*Trace(lij), temx = 1/3*Trace(stij)
     tem  = ( l11(i,k,j) + l22(i,k,j) + l33(i,k,j) )/3.0
-    !temx = ( tfs11(i,k,j) + tfs22(i,k,j) + tfs33(i,k,j) )/3.0
     temx = ( st11(i,k,j) + st22(i,k,j) + st33(i,k,j) )/3.0
 
-    ! numerator = Sij*Mij
-    !drmn(i,k,j) =  ( l11(i,k,j) - tem )*( tfs11(i,k,j) - temx ) +  &
-    !              ( l22(i,k,j) - tem )*( tfs22(i,k,j) - temx ) +  &
-    !              ( l33(i,k,j) - tem )*( tfs33(i,k,j) - temx ) +  &
-    !              2.0*( l12(i,k,j)*tfs12(i,k,j) +                  &
-    !              l13(i,k,j)*tfs13(i,k,j) + l23(i,k,j)*tfs23(i,k,j) )
     drmn(i,k,j) = ( l11(i,k,j) - tem )*( st11(i,k,j) - temx ) +  &
                   ( l22(i,k,j) - tem )*( st22(i,k,j) - temx ) +  &
                   ( l33(i,k,j) - tem )*( st33(i,k,j) - temx ) +  &
                   2.0*( l12(i,k,j)*st12(i,k,j) +                  &
                   l13(i,k,j)*st13(i,k,j) + l23(i,k,j)*st23(i,k,j) )
 !    drmn(i,k,j) = drmn(i,k,j) * min(1.0,( (max( 0.0, 1.0 - BN2(i,k,j) / (def2(i,k,j)+eps) / pr ))**0.5 )) ASW stability correction added here by XS but commented to prevent potential double counting
+! ASW the line above basically does the same thing as the stability correction in the drmevc subroutine.
+! However, they are not bit for bit. I have found that this line is numerically stable for real cases,
+! but I don't know why. One option is to uncomment this line and comment out the stability correction
+! in drmevc for numerical stability. Weird, though.
 
 
     ! denominator = Mij*Mij
@@ -1050,28 +1064,6 @@ ENDIF
                   ( st33(i,k,j) - temx )**2 +      &
                   2.0*( st12(i,k,j)**2 +         &
                   st13(i,k,j)**2 + st23(i,k,j)**2 )
-
-	!drmd(i,k,j) = ddiff*( tfs11(i,k,j) - temx )**2 +      &
-    !              ( tfs22(i,k,j) - temx )**2 +      &
-    !              ( tfs33(i,k,j) - temx )**2 +      &
-    !              2.0*( tfs12(i,k,j)**2 +         &
-    !              tfs13(i,k,j)**2 + tfs23(i,k,j)**2 )
-
-
-    ! ! numerator
-    ! drmn(i,k,j) = ( l11(i,k,j) - tem)*( tfs11(i,k,j) - temx) +  &
-    !               ( l22(i,k,j) - tem)*( tfs22(i,k,j) - temx) +  &
-    !               ( l33(i,k,j) - tem)*( tfs33(i,k,j) - temx) +  &
-    !               2.0*( l12(i,k,j)*tfs12(i,k,j) +                  &
-    !               l13(i,k,j)*tfs13(i,k,j) + l23(i,k,j)*tfs23(i,k,j) )
-
-    ! ! denominator
-    ! drmd(i,k,j) = ddiff * (( tfs11(i,k,j) - temx)**2 +      &
-    !               ( tfs22(i,k,j) - temx)**2 +      &
-    !               ( tfs33(i,k,j) - temx)**2 +      &
-    !               2.0*( tfs12(i,k,j)**2 +         &
-    !               tfs13(i,k,j)**2 + tfs23(i,k,j)**2 ))
-
 
 !  if ((i.eq.its+5).and.(j.eq.jts+5)) print *, 'k=', k, 'drmn=', drmn(i,k,j), 'drmd=', drmd(i,k,j)
 
