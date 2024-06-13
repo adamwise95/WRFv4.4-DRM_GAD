@@ -4588,14 +4588,20 @@ IF ( config_flags%rsfs_opt .lt. 6 .and. config_flags%rsfs_opt .ge. 0 ) THEN ! AD
 DO j = j_start, j_end
 DO k = kts, ktf
 DO i = i_start, i_end + 1
+if ((k-kts).lt.config_flags%drm_dwl_klevel .or. config_flags%drm_dwl_klevel.eq.0 ) then ! ASW don't add rsfs above some k level for numerical stability
 
 !! ASW DWL the easy way
 !IF ( config_flags%rsfsT_opt .eq. 1) THEN
-H1(i,k,j) = H1(i,k,j) + rsfs_h1(i,k,j)
+    H1(i,k,j) = H1(i,k,j) + rsfs_h1(i,k,j)
 !ELSE IF ( config_flags%rsfsT_opt .eq. 0) THEN
 !H1(i,k,j) = H1(i,k,j)
 !END IF
+    ! check for now to make sure this is working correctly
+    if ((i.eq.i_start+5).and.(j.eq.j_start+5).and.(k.eq.kts+5)) print *, 'k=', k, 'kts=', kts, 'adding rtau'
+else
+    if ((i.eq.i_start+5).and.(j.eq.j_start+5).and.(k.eq.kts+100)) print *, 'k=', k, 'kts=', kts, 'not adding rtau'
 
+end if
 ENDDO
 ENDDO
 ENDDO
@@ -4702,6 +4708,7 @@ IF ( config_flags%rsfs_opt .lt. 6 .and. config_flags%rsfs_opt .ge. 0 ) THEN ! AD
 DO j = j_start, j_end + 1
 DO k = kts, ktf
 DO i = i_start, i_end
+if ((k-kts).lt.config_flags%drm_dwl_klevel .or. config_flags%drm_dwl_klevel.eq.0 ) then ! ASW don't add rsfs above some k level for numerical stability
 
 !! ASW DWL the easy way
 !IF ( config_flags%rsfsT_opt .eq. 1) THEN
@@ -4710,6 +4717,7 @@ H2(i,k,j) = H2(i,k,j) + rsfs_h2(i,k,j)
 !H2(i,k,j) = H2(i,k,j)
 !END IF
 
+end if
 ENDDO
 ENDDO
 ENDDO
@@ -5991,6 +5999,8 @@ SUBROUTINE rsfs_vertical_diffusion_s( tendency, rtau, config_flags, var, xkhv,  
    DO j = j_start, j_end
       DO k = kts+1,ktf
          DO i = i_start, i_end
+            if ((k-kts).lt.config_flags%drm_dwl_klevel .or. config_flags%drm_dwl_klevel.eq.0 ) then ! ASW don't add rsfs above some k level for numerical stability
+
 			!! ASW DWL the easy way
 			!IF ( config_flags%rsfsT_opt .eq. 1) THEN
             !print*,'adding rsfs h3!' !ASW
@@ -5998,6 +6008,8 @@ SUBROUTINE rsfs_vertical_diffusion_s( tendency, rtau, config_flags, var, xkhv,  
 			!ELSE IF ( config_flags%rsfsT_opt .eq. 0) THEN
 			!H3(i,k,j) = H3(i,k,j)
 			!END IF
+
+            end
          END DO
       END DO
    END DO
@@ -6669,12 +6681,17 @@ END SUBROUTINE nonlocal_flux
       DO j = j_start, j_end                                                                   
       DO k = kts, ktf                                                                         
       DO i = i_start, i_end
+         if ((k-kts).lt.config_flags%drm_dwl_klevel .or. config_flags%drm_dwl_klevel.eq.0 ) then ! ASW don't add rsfs above some k level for numerical stability
+
+
 		 !! ASW DWL the easy way
 		 !IF ( config_flags%rsfsU_opt .eq. 1) THEN
          titau(i,k,j) = titau(i,k,j) + rho(i,k,j)*rtau(i,k,j)
 		 !ELSE IF ( config_flags%rsfsU_opt .eq. 0) THEN
 		 !titau(i,k,j) = titau(i,k,j)
 	 	 !END IF
+
+         end if
       END DO                                                                                  
       END DO                                                                                  
       END DO                                                                                  
@@ -6836,13 +6853,18 @@ END SUBROUTINE nonlocal_flux
       DO k = kts, ktf                                                                       
       DO i = i_start, i_end                                                                 
 !         rhoavg = 0.25 * ( rho(i-1,k,j  ) + rho(i,k,j  )  +  &                              
-!                           rho(i-1,k,j-1) + rho(i,k,j-1) )                                  
+!                           rho(i-1,k,j-1) + rho(i,k,j-1) )  
+         if ((k-kts).lt.config_flags%drm_dwl_klevel .or. config_flags%drm_dwl_klevel.eq.0 ) then ! ASW don't add rsfs above some k level for numerical stability
+
+
          !! ASW DWL the easy way
 		 !IF ( config_flags%rsfsU_opt .eq. 1) THEN
 		 titau(i,k,j) = titau(i,k,j) + rhoavg(i,k,j)*rtau(i,k,j)
 		 !ELSE IF ( config_flags%rsfsU_opt .eq. 0) THEN
 		 !titau(i,k,j) = titau(i,k,j)
 		 !END IF
+
+         end if
       END DO                                                                                
       END DO                                                                                
       END DO                                                                                
@@ -7009,13 +7031,17 @@ END SUBROUTINE nonlocal_flux
       DO k = kts+1, ktf                                                                   
       DO i = i_start, i_end                                                               
 !         rhoavg = 0.5 * ( fnm(k) * ( rho(i-1,k  ,j) + rho(i,k  ,j) ) + &                  
-!                          fnp(k) * ( rho(i-1,k-1,j) + rho(i,k-1,j) ) )                    
+!                          fnp(k) * ( rho(i-1,k-1,j) + rho(i,k-1,j) ) )      
+         if ((k-kts).lt.config_flags%drm_dwl_klevel .or. config_flags%drm_dwl_klevel.eq.0 ) then ! ASW don't add rsfs above some k level for numerical stability
+
          !! ASW DWL the easy way
 		 !IF ( config_flags%rsfsU_opt .eq. 1) THEN
 		 titau(i,k,j) = titau(i,k,j) + rhoavg(i,k,j)*rtau(i,k,j) 
 		 !ELSE IF ( config_flags%rsfsU_opt .eq. 0) THEN
 		 !titau(i,k,j) = titau(i,k,j)
 		 !END IF
+
+         end if
       END DO                                                                              
       END DO                                                                              
       END DO                                                                              
@@ -7205,14 +7231,17 @@ END SUBROUTINE nonlocal_flux
       DO k = kts+1, ktf                                                                     
       DO i = i_start, i_end                                                                 
 !         rhoavg = 0.5 * ( fnm(k) * ( rho(i,k  ,j) + rho(i,k  ,j-1) ) +  &                   
-!                          fnp(k) * ( rho(i,k-1,j) + rho(i,k-1,j-1) ) )                      
+!                          fnp(k) * ( rho(i,k-1,j) + rho(i,k-1,j-1) ) )   
+        if ((k-kts).lt.config_flags%drm_dwl_klevel .or. config_flags%drm_dwl_klevel.eq.0 ) then ! ASW don't add rsfs above some k level for numerical stability
+
 		!! ASW DWL the easy way
 		!IF ( config_flags%rsfsU_opt .eq. 1) THEN
 		titau(i,k,j) = titau(i,k,j) + rhoavg(i,k,j)*rtau(i,k,j)                                   
 		!ELSE IF ( config_flags%rsfsU_opt .eq. 0) THEN
 		!titau(i,k,j) = titau(i,k,j)
 		!END IF
-			
+
+        end if			
 	  END DO                                                                                
       END DO                                                                                
       END DO                                                                                
