@@ -134,7 +134,10 @@ SUBROUTINE sfs_driver( grid, config_flags, &
                           ,HALO_EM_HIJ_DRM_sub   &                             
                           ,PERIOD_EM_HIJ_DRM_sub  &                            
                           ,HALO_EM_HIJC_DRM_sub  &                             
-                          ,PERIOD_EM_HIJC_DRM_sub  &                           
+                          ,PERIOD_EM_HIJC_DRM_sub  &
+                          !,HALO_EM_EVC_DRM_H_sub & ! Julia
+                          !,PERIOD_EM_EVC_DRM_H_sub & ! Julia
+                          ,period_bdy_em_phy_bc_sub & ! Julia
                           ,HALO_EM_TFSIJ_DRM_sub  &                            
                           ,PERIOD_EM_TFSIJ_DRM_sub  &                          
                           ,HALO_EM_TFSIJC_DRM_sub  &                           
@@ -7969,9 +7972,12 @@ ENDIF ! config_flags%dwl_opt .EQ. 1
 ! Update halos for XKMH, XKMV, XKHH, XKHV, NW_TAU13 and NW_TAU23
 !_______________________________________________________________________
 
+! Julia
 #ifdef DM_PARALLEL
 #      include "HALO_EM_EVC_DRM.inc"
 #      include "PERIOD_EM_EVC_DRM.inc"
+#      include "HALO_EM_EV.inc" 
+#      include "PERIOD_BDY_EM_PHY_BC.inc" 
 #endif
 
   !$OMP PARALLEL DO   &
