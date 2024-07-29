@@ -1020,22 +1020,22 @@ IF (dwl_opt .GE. 1) THEN
   ENDDO
   ENDDO
 
-ELSE IF (dwl_opt .eq. 0) then !ASW bug currently means this can't get entered. Bad option anyways since we want H's. I think this was actually originally implemented by Jeff for numerical stability reasons
-
-  DO j = jts, jte
-  DO k = kbgn, kend
-  DO i = its, ite
-
-    l11(i,k,j) = tfuu(i,k,j) - tfu(i,k,j)*tfu(i,k,j)
-    l22(i,k,j) = tfvv(i,k,j) - tfv(i,k,j)*tfv(i,k,j)
-    l33(i,k,j) = tfww(i,k,j) - tfw(i,k,j)*tfw(i,k,j)
-    l12(i,k,j) = tfuv(i,k,j) - tfu(i,k,j)*tfv(i,k,j)
-    l13(i,k,j) = tfuw(i,k,j) - tfu(i,k,j)*tfw(i,k,j)
-    l23(i,k,j) = tfvw(i,k,j) - tfv(i,k,j)*tfw(i,k,j)
-
-  ENDDO
-  ENDDO
-  ENDDO
+!ELSE IF (dwl_opt .eq. 0) then !ASW bug currently means this can't get entered. Bad option anyways since we want H's. I think this was actually originally implemented by Jeff for numerical stability reasons
+!
+!  DO j = jts, jte
+!  DO k = kbgn, kend
+!  DO i = its, ite
+!
+!    l11(i,k,j) = tfuu(i,k,j) - tfu(i,k,j)*tfu(i,k,j)
+!    l22(i,k,j) = tfvv(i,k,j) - tfv(i,k,j)*tfv(i,k,j)
+!    l33(i,k,j) = tfww(i,k,j) - tfw(i,k,j)*tfw(i,k,j)
+!    l12(i,k,j) = tfuv(i,k,j) - tfu(i,k,j)*tfv(i,k,j)
+!    l13(i,k,j) = tfuw(i,k,j) - tfu(i,k,j)*tfw(i,k,j)
+!    l23(i,k,j) = tfvw(i,k,j) - tfv(i,k,j)*tfw(i,k,j)
+!
+!  ENDDO
+!  ENDDO
+!  ENDDO
 
 ENDIF
 

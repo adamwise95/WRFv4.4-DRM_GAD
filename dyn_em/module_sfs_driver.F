@@ -7042,7 +7042,7 @@ ENDIF ! config_flags%dwl_opt .EQ. 1
                            grid%j_start(ij), grid%j_end(ij),  &
                            k_start, k_end                     )
 
-              IF ( config_flags%dwl_opt .EQ. 1 ) THEN  ! USE HIJ
+              IF ( config_flags%rsfs_opt .GE. 0 ) THEN  ! USE HIJ !Julia
 
               CALL proj_c( hijc_drm(ims,kms,jms,P_h12c),      &
                            hijc_drm(ims,kms,jms,P_h13c),      &
